@@ -1,7 +1,7 @@
 {
   "name": "rgbledarduino",
   "version": "1.0.0",
-  "description": "",
+  "description": "A example for serial communication with Arduino and NodeJs to control a RGB led.",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
