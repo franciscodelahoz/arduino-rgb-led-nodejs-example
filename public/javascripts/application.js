@@ -18,14 +18,14 @@ function sendColor() {
 
 function setSlidersValue() {
   redSlider.value   = theColor.getRedValue();
-  greenSlider.value	= theColor.getGreenValue();
-  blueSlider.value 	= theColor.getBlueValue();
+  greenSlider.value = theColor.getGreenValue();
+  blueSlider.value  = theColor.getBlueValue();
 }
 
 function setInputValues() {
-  redInput.value 		= theColor.getRedValue();
-  greenInput.value 	= theColor.getGreenValue();
-  blueInput.value 	= theColor.getBlueValue();
+  redInput.value   = theColor.getRedValue();
+  greenInput.value = theColor.getGreenValue();
+  blueInput.value  = theColor.getBlueValue();
 }
 
 function setValueByComponent(component, value) {
