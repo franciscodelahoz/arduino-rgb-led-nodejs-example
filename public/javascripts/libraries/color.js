@@ -28,7 +28,7 @@ export class Color {
 	}
 
 	getHEXvalue() {
-		const redComponent 	 = this.componentToHEX(this.red);
+		const redComponent   = this.componentToHEX(this.red);
 		const greenComponent = this.componentToHEX(this.green);
 		const blueComponent  = this.componentToHEX(this.blue);
 
@@ -54,7 +54,7 @@ export class Color {
 	setValueFromHex(colorHEXvalue) {
 		const RGBcolor = this.HEXtoRGB(colorHEXvalue);
 
-		this.red 	 = RGBcolor.r;
+		this.red   = RGBcolor.r;
 		this.green = RGBcolor.g;
 		this.blue  = RGBcolor.b;
 	}
