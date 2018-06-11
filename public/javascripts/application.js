@@ -17,7 +17,7 @@ function sendColor() {
 }
 
 function setSlidersValue() {
-  redSlider.value 	= theColor.getRedValue();
+  redSlider.value   = theColor.getRedValue();
   greenSlider.value	= theColor.getGreenValue();
   blueSlider.value 	= theColor.getBlueValue();
 }
