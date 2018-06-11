@@ -1,13 +1,13 @@
 import { Color } from './libraries/color.js';
 
-const redSlider 	= document.getElementById('red');
-const greenSlider	= document.getElementById('green');
-const blueSlider 	= document.getElementById('blue');
-const redInput 		= document.getElementById('redInput');
-const greenInput	= document.getElementById('greenInput');
-const blueInput 	= document.getElementById('blueInput');
-const colorInput 	= document.getElementById('colorInput');
-const colorShowed	= document.getElementById('color');
+const redSlider   = document.getElementById('red');
+const greenSlider = document.getElementById('green');
+const blueSlider  = document.getElementById('blue');
+const redInput    = document.getElementById('redInput');
+const greenInput  = document.getElementById('greenInput');
+const blueInput   = document.getElementById('blueInput');
+const colorInput  = document.getElementById('colorInput');
+const colorShowed = document.getElementById('color');
 
 var theColor = new Color(0, 0, 0);
 const socket = io();
