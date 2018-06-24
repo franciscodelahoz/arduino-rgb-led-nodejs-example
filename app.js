@@ -9,10 +9,10 @@ const server = http.createServer(app);
 const index = require('./routes/index');
 
 app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
+app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
-app.use('/public', express.static(path.join(__dirname + '/public')));
+app.use('/public', express.static(path.join(__dirname, '/public')));
 
 io = socket.listen(server);
 
@@ -22,5 +22,5 @@ rgbLedController(io);
 app.use('/', index);
 
 server.listen(app.get('port'), function() {
-	console.log("Server listening in port", app.get('port'));
+  console.log(`Server listening In Port: ${app.get('port')}`);
 });

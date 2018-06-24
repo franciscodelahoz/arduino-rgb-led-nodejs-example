@@ -13,101 +13,101 @@ var theColor = new Color(0, 0, 0);
 const socket = io();
 
 function sendColor() {
-	socket.emit('Arduino::color', theColor.getColor());
+  socket.emit('Arduino::color', theColor.getColor());
 }
 
 function setSlidersValue() {
-	redSlider.value   = theColor.getRedValue();
-	greenSlider.value = theColor.getGreenValue();
-	blueSlider.value  = theColor.getBlueValue();
+  redSlider.value   = theColor.getRedValue();
+  greenSlider.value = theColor.getGreenValue();
+  blueSlider.value  = theColor.getBlueValue();
 }
 
 function setInputValues() {
-	redInput.value   = theColor.getRedValue();
-	greenInput.value = theColor.getGreenValue();
-	blueInput.value  = theColor.getBlueValue();
+  redInput.value   = theColor.getRedValue();
+  greenInput.value = theColor.getGreenValue();
+  blueInput.value  = theColor.getBlueValue();
 }
 
 function setValueByComponent(component, value) {
-	if (component == 'red')   { theColor.setRedValue(value)   }
-	if (component == 'green') { theColor.setGreenValue(value) }
-	if (component == 'blue')  { theColor.setBlueValue(value)  }
+  if (component === 'red')   { theColor.setRedValue(value)   }
+  if (component === 'green') { theColor.setGreenValue(value) }
+  if (component === 'blue')  { theColor.setBlueValue(value)  }
 }
 
 function setValueBySlider(slider, component) {
-	setValueByComponent(component, slider.value);
-	setInputValues();
-	colorShowed.style.backgroundColor = theColor.getRGBvalue();
-	colorInput.value = theColor.getHEXvalue();
-	sendColor();
+  setValueByComponent(component, slider.value);
+  setInputValues();
+  colorShowed.style.backgroundColor = theColor.getRGBvalue();
+  colorInput.value = theColor.getHEXvalue();
+  sendColor();
 }
 
 function setValueByInput(component, value) {
-	setValueByComponent(component, value);
-	setSlidersValue();
-	colorShowed.style.backgroundColor = theColor.getRGBvalue();
-	colorInput.value = theColor.getHEXvalue();
-	sendColor();
+  setValueByComponent(component, value);
+  setSlidersValue();
+  colorShowed.style.backgroundColor = theColor.getRGBvalue();
+  colorInput.value = theColor.getHEXvalue();
+  sendColor();
 }
 
 function correctInputValue(input, component) {
-	if (input.value < 0) {
-		input.value = 0;
-		setValueByInput(component, input.value);
+  if (input.value < 0) {
+    input.value = 0;
+    setValueByInput(component, input.value);
 
-	} else if (input.value > 255) {
-		input.value = 255;
-		setValueByInput(component, input.value);
+  } else if (input.value > 255) {
+    input.value = 255;
+    setValueByInput(component, input.value);
 
-	} else if (input.value.trim() == '') {
-		setTimeout(() => {
-			if (input.value.trim() == '') { input.value = 0 }
-			setValueByInput(component, input.value);
-		}, 1500);
+  } else if (input.value.trim() === '') {
+    setTimeout(() => {
+      if (input.value.trim() === '') { input.value = 0 }
+      setValueByInput(component, input.value);
+    }, 1500);
 
-	} else {
-		setValueByInput(component, input.value);
-	}
+  } else {
+    setValueByInput(component, input.value);
+  }
 }
 
 redSlider.addEventListener('input', function() {
-	setValueBySlider(this, 'red');
+  setValueBySlider(this, 'red');
 });
 
 greenSlider.addEventListener('input', function() {
-	setValueBySlider(this, 'green');	
+  setValueBySlider(this, 'green');
 });
 
 blueSlider.addEventListener('input', function() {
-	setValueBySlider(this, 'blue');
+  setValueBySlider(this, 'blue');
 });
 
 redInput.addEventListener('input', function() {
-	correctInputValue(this, 'red');
+  correctInputValue(this, 'red');
 });
 
 greenInput.addEventListener('input', function() {
-	correctInputValue(this, 'green');
+  correctInputValue(this, 'green');
 });
 
 blueInput.addEventListener('input', function() {
-	correctInputValue(this, 'blue');
+  correctInputValue(this, 'blue');
 });
 
 colorInput.addEventListener('change', function() {
-	theColor.setValueFromHex(this.value);
-	colorShowed.style.backgroundColor = theColor.getRGBvalue();
-	setSlidersValue();
-	setInputValues();
-	sendColor();
+  theColor.setValueFromHex(this.value);
+  colorShowed.style.backgroundColor = theColor.getRGBvalue();
+  setSlidersValue();
+  setInputValues();
+  sendColor();
 });
 
 colorShowed.addEventListener('click', function() {
-	colorInput.click();
+  colorInput.click();
 });
 
 window.onload = function() {
-	setSlidersValue();
-	setInputValues();
-	sendColor();
+  setSlidersValue();
+  setInputValues();
+  sendColor();
 }

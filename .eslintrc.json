@@ -1,0 +1,12 @@
+{
+  "extends": "standard",
+  "rules": {
+    "no-multi-spaces": 0,
+    "semi": 0,
+    "space-before-function-paren": 0,
+    "no-useless-constructor": "off",
+    "no-undef": "off",
+    "padded-blocks": "off",
+    "no-useless-escape": "off"
+  }
+}
