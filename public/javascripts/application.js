@@ -13,7 +13,7 @@ var theColor = new Color(0, 0, 0);
 const socket = io();
 
 function sendColor() {
-  socket.emit('Arduino::color', theColor.getColor());
+  socket.emit('Arduino::color', theColor.getRGBvalue());
 }
 
 function setSlidersValue() {
@@ -37,16 +37,16 @@ function setValueByComponent(component, value) {
 function setValueBySlider(slider, component) {
   setValueByComponent(component, slider.value);
   setInputValues();
-  colorShowed.style.backgroundColor = theColor.getRGBvalue();
-  colorInput.value = theColor.getHEXvalue();
+  colorShowed.style.backgroundColor = theColor.getRGBstring();
+  colorInput.value = theColor.getHEXstring();
   sendColor();
 }
 
 function setValueByInput(component, value) {
   setValueByComponent(component, value);
   setSlidersValue();
-  colorShowed.style.backgroundColor = theColor.getRGBvalue();
-  colorInput.value = theColor.getHEXvalue();
+  colorShowed.style.backgroundColor = theColor.getRGBstring();
+  colorInput.value = theColor.getHEXstring();
   sendColor();
 }
 
@@ -95,8 +95,8 @@ blueInput.addEventListener('input', function() {
 });
 
 colorInput.addEventListener('change', function() {
-  theColor.setValueFromHex(this.value);
-  colorShowed.style.backgroundColor = theColor.getRGBvalue();
+  theColor.setColorFromHex(this.value);
+  colorShowed.style.backgroundColor = theColor.getRGBstring();
   setSlidersValue();
   setInputValues();
   sendColor();

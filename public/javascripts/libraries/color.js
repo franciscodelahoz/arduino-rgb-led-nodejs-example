@@ -13,23 +13,23 @@ export class Color {
   setGreenValue(value) { this.green = value; }
   setBlueValue(value)  { this.blue = value;  }
 
-  getColor() {
+  getRGBvalue() {
     return { r: this.red, g: this.green, b: this.blue };
   }
 
-  getRGBvalue() {
+  getRGBstring() {
     return `rgb(${this.red}, ${this.green}, ${this.blue})`;
   }
 
-  componentToHEX(component) {
+  colorComponentToHEX(component) {
     var hex = Number(component).toString(16).toUpperCase();
     return hex.length === 1 ? `0${hex}` : hex;
   }
 
-  getHEXvalue() {
-    const redComponent   = this.componentToHEX(this.red);
-    const greenComponent = this.componentToHEX(this.green);
-    const blueComponent  = this.componentToHEX(this.blue);
+  getHEXstring() {
+    const redComponent   = this.colorComponentToHEX(this.red);
+    const greenComponent = this.colorComponentToHEX(this.green);
+    const blueComponent  = this.colorComponentToHEX(this.blue);
 
     return `#${redComponent}${greenComponent}${blueComponent}`;
   }
@@ -51,13 +51,13 @@ export class Color {
     return { r: redComponent, g: greenComponent, b: blueComponent };
   }
 
-  setValueFromRGB(red, green, blue) {
+  setColorFromRGB(red, green, blue) {
     this.red   = red;
     this.green = green;
     this.blue  = blue;
   }
 
-  setValueFromHex(colorHEXvalue) {
+  setColorFromHex(colorHEXvalue) {
     const RGBcolor = this.HEXtoRGB(colorHEXvalue);
 
     this.red   = RGBcolor.r;
