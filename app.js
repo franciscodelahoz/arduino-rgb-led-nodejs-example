@@ -1,12 +1,11 @@
-const path = require('path');
-const socket = require('socket.io');
-const http = require('http');
+const path    = require('path');
+const socket  = require('socket.io');
+const http    = require('http');
 const express = require('express');
+const app     = express();
+const index   = require('./routes/index');
 
-const app = express();
-const server = http.createServer(app);
-
-const index = require('./routes/index');
+const server  = http.createServer(app)
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, '/views'));

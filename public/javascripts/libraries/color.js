@@ -1,8 +1,8 @@
 export class Color {
   constructor(red = 0, green = 0, blue = 0) {
-    this.red = red;
+    this.red   = red;
     this.green = green;
-    this.blue = blue;
+    this.blue  = blue;
   }
 
   getRedValue()   { return this.red;   }
@@ -52,9 +52,9 @@ export class Color {
   }
 
   setValueFromRGB(red, green, blue) {
-    this.red = red;
+    this.red   = red;
     this.green = green;
-    this.blue = blue;
+    this.blue  = blue;
   }
 
   setValueFromHex(colorHEXvalue) {
