@@ -17,11 +17,11 @@ module.exports = function(io) {
     console.log('A New User Has Connected!');
     socket.on('Arduino::color', function(colorValue) {
       const color = `R${colorValue.r}G${colorValue.g}B${colorValue.b}\n`;
-      serialPort.write(color)
+      serialPort.write(color);
     });
   });
 
   serialPort.on('data', function(data) {
     console.log(data.toString());
   });
-}
+};

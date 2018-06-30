@@ -29,9 +29,9 @@ function setInputValues() {
 }
 
 function setValueByComponent(component, value) {
-  if (component === 'red')   { theColor.setRedValue(value)   }
-  if (component === 'green') { theColor.setGreenValue(value) }
-  if (component === 'blue')  { theColor.setBlueValue(value)  }
+  if (component === 'red')   { theColor.setRedValue(value);   }
+  if (component === 'green') { theColor.setGreenValue(value); }
+  if (component === 'blue')  { theColor.setBlueValue(value);  }
 }
 
 function setValueBySlider(slider, component) {
@@ -61,7 +61,7 @@ function correctInputValue(input, component) {
 
   } else if (input.value.trim() === '') {
     setTimeout(() => {
-      if (input.value.trim() === '') { input.value = 0 }
+      if (input.value.trim() === '') { input.value = 0; }
       setValueByInput(component, input.value);
     }, 1500);
 
@@ -110,4 +110,4 @@ window.onload = function() {
   setSlidersValue();
   setInputValues();
   sendColor();
-}
+};

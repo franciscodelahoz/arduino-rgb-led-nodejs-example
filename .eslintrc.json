@@ -2,7 +2,7 @@
   "extends": "standard",
   "rules": {
     "no-multi-spaces": 0,
-    "semi": 0,
+    "semi": [2, "always"],
     "space-before-function-paren": 0,
     "no-useless-constructor": "off",
     "no-undef": "off",
