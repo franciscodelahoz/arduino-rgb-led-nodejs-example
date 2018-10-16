@@ -10,10 +10,12 @@ dotenv.config({ path: '.env' });
 
 const helmet = require('helmet');
 const compression = require('compression');
+const auth = require('./bin/authentication/auth');
 
 const server  = http.createServer(app);
 
 app.use(helmet());
+app.use(auth);
 app.set('port', process.env.NODE_APPLICATION_PORT);
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'pug');
