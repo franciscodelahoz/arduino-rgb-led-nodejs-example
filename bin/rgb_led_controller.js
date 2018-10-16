@@ -1,7 +1,8 @@
 const SerialPort = require('serialport');
+const config = require('./config');
 
 module.exports = function(io) {
-	var serialPort = new SerialPort('COM3', {
+	var serialPort = new SerialPort(config.ARDUINO_SERIAL_COM_PORT, {
 		baudRate: 115200
 	});
 
@@ -15,8 +16,11 @@ module.exports = function(io) {
 
 	io.sockets.on('connection', function(socket) {
 		console.log('A New User Has Connected!');
+
 		socket.on('Arduino::color', function(colorValue) {
-			const color = `R${colorValue.r}G${colorValue.g}B${colorValue.b}\n`;
+			const { red, green, blue } = colorValue;
+			const color = `R${red}G${green}B${blue}\n`;
+
 			serialPort.write(color);
 		});
 	});

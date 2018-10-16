@@ -4,13 +4,13 @@ const http    = require('http');
 const express = require('express');
 const app     = express();
 const index   = require('./routes/index');
+const config = require('./bin/config');
 
 const server  = http.createServer(app);
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', config.NODE_APPLICATION_PORT);
 app.set('views', path.join(__dirname, '/views'));
-app.set('view engine', 'ejs');
-app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'pug');
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
 io = socket.listen(server);
