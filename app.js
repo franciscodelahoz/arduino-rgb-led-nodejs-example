@@ -6,10 +6,9 @@ const app     = express();
 const index   = require('./routes/index');
 
 const dotenv = require('dotenv');
-dotenv.config({ path: '.env' });
+dotenv.config({ path: '.env.example' });
 
 const helmet = require('helmet');
-const compression = require('compression');
 const auth = require('./bin/authentication/auth');
 
 const server  = http.createServer(app);
@@ -20,7 +19,6 @@ app.set('port', process.env.NODE_APPLICATION_PORT);
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'pug');
 app.use('/public', express.static(path.join(__dirname, '/public')));
-app.use(compression());
 
 io = socket.listen(server);
 
