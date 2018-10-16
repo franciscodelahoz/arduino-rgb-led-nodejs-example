@@ -20,6 +20,8 @@ app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'pug');
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
+app.locals.pretty = true;
+
 io = socket.listen(server);
 
 const rgbLedController = require('./bin/rgb_led_controller');
