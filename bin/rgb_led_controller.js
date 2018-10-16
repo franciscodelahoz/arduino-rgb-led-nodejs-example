@@ -1,8 +1,7 @@
 const SerialPort = require('serialport');
-const config = require('./config');
 
 module.exports = function(io) {
-	var serialPort = new SerialPort(config.ARDUINO_SERIAL_COM_PORT, {
+	var serialPort = new SerialPort(process.env.ARDUINO_SERIAL_COM_PORT, {
 		baudRate: 115200
 	});
 
