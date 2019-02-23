@@ -1,6 +1,24 @@
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
 
+exports.SearchPorts = function() {
+	return new Promise((resolve, reject) => {
+		SerialPort.list((error, ports) => {
+			if (error) { reject(error); }
+
+			if (!ports.length) {
+				reject('No se han encontrado dispositivos conectados');
+			}
+
+			let FindedPorts = ports.map(port => {
+				return { Port: port.comName, Name: port.manufacturer };
+			});
+
+			resolve(FindedPorts);
+		});
+	});
+};
+
 exports.SerialController = function(io, SelectedPort) {
 	var serialPort = new SerialPort(SelectedPort, {
 		baudRate: 115200

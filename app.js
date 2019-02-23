@@ -11,7 +11,7 @@ module.exports = function(SerialPort) {
 
 	const helmet = require('helmet');
 	const auth = require('./bin/authentication/auth');
-	const SerialPortController = require('./bin/SerialPorts/SerialPortController');
+	const { SerialController } = require('./bin/SerialPortController');
 
 	const index = require('./routes/index');
 
@@ -30,7 +30,7 @@ module.exports = function(SerialPort) {
 
 	app.use('/', index);
 
-	SerialPortController.SerialController(io, SerialPort);
+	SerialController(io, SerialPort);
 
 	server.listen(app.get('port'), function() {
 		console.log(`Server Listening In Port: ${app.get('port')}`);
