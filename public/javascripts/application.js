@@ -12,6 +12,10 @@ const colorShowed = document.getElementById('color');
 var theColor = new Color(0, 0, 0);
 const socket = io();
 
+socket.on('connect', () => {
+	socket.emit('RGB::Value', '');
+});
+
 function sendColor() {
 	socket.emit('Arduino::color', theColor.getRGBvalue());
 }
@@ -34,10 +38,14 @@ function setValueByComponent(component, value) {
 	if (component === 'blue')  { theColor.setBlueValue(value);  }
 }
 
+function setColorShowed() {
+	colorShowed.style.backgroundColor = theColor.getRGBstring();
+}
+
 function setValueBySlider(slider, component) {
 	setValueByComponent(component, slider.value);
 	setInputValues();
-	colorShowed.style.backgroundColor = theColor.getRGBstring();
+	setColorShowed();
 	colorInput.value = theColor.getHEXstring();
 	sendColor();
 }
@@ -45,7 +53,7 @@ function setValueBySlider(slider, component) {
 function setValueByInput(component, value) {
 	setValueByComponent(component, value);
 	setSlidersValue();
-	colorShowed.style.backgroundColor = theColor.getRGBstring();
+	setColorShowed();
 	colorInput.value = theColor.getHEXstring();
 	sendColor();
 }
@@ -96,7 +104,7 @@ blueInput.addEventListener('input', function() {
 
 colorInput.addEventListener('change', function() {
 	theColor.setColorFromHex(this.value);
-	colorShowed.style.backgroundColor = theColor.getRGBstring();
+	setColorShowed();
 	setSlidersValue();
 	setInputValues();
 	sendColor();
@@ -106,8 +114,17 @@ colorShowed.addEventListener('click', function() {
 	colorInput.click();
 });
 
-window.onload = function() {
+socket.on('Color', (message) => {
+	const { r: red, g: green, b: blue } = message;
+	theColor.setColorFromRGB(red, green, blue);
+
 	setSlidersValue();
 	setInputValues();
-	sendColor();
-};
+	setColorShowed();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+	setSlidersValue();
+	setInputValues();
+	setColorShowed();
+});
