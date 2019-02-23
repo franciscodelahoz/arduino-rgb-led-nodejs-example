@@ -1,34 +1,23 @@
-const path    = require('path');
-const socket  = require('socket.io');
-const http    = require('http');
-const express = require('express');
-const app     = express();
-const index   = require('./routes/index');
+const inquirer = require('inquirer');
+const SearchSerialPorts = require('./bin/SerialPorts/SearchSerialPorts');
 
-const dotenv = require('dotenv');
-dotenv.config({ path: '.env.example' });
+SearchSerialPorts.SearchPorts()
+	.then(ports => {
+		inquirer.prompt([{
+			type: 'list',
+			message: 'Select the port where the Arduino is connected',
+			name: 'Ports',
+			choices: ports.map(port => {
+				return {
+					name: `${port.Name} ==> ${port.Port}`,
+					value: port.Port
+				};
+			})
+		}]).then(answers => {
+			require('./app')(answers.Ports);
 
-const helmet = require('helmet');
-const auth = require('./bin/authentication/auth');
+		}).catch(error => {
+			console.log(error);
+		});
 
-const server  = http.createServer(app);
-
-app.use(helmet());
-app.use(auth);
-app.set('port', process.env.NODE_APPLICATION_PORT);
-app.set('views', path.join(__dirname, '/views'));
-app.set('view engine', 'pug');
-app.use('/public', express.static(path.join(__dirname, '/public')));
-
-app.locals.pretty = true;
-
-io = socket.listen(server);
-
-const rgbLedController = require('./bin/rgb_led_controller');
-rgbLedController(io);
-
-app.use('/', index);
-
-server.listen(app.get('port'), function() {
-	console.log(`Server Listening In Port: ${app.get('port')}`);
-});
+	}).catch(error => { console.log(error); });

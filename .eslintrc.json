@@ -11,6 +11,8 @@
     "indent": [2, "tab", { "SwitchCase": 1, "VariableDeclarator": 1 }],
     "no-tabs": "off",
     "quotes": [2, "single", { "allowTemplateLiterals": true }],
-    "one-var": "off"
+    "one-var": "off",
+    "no-throw-literal": "off",
+    "prefer-promise-reject-errors": "off"
   }
 }
