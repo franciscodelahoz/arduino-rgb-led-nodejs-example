@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
-const { SearchPorts } = require('./bin/SerialPortController');
+const SerialPortController = require('./bin/SerialPortController');
 
-SearchPorts().then(ports => {
+SerialPortController.SearchPorts().then(ports => {
 	inquirer.prompt([{
 		type: 'list',
 		message: 'Select the port where the Arduino is connected',

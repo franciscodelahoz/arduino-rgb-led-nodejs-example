@@ -11,7 +11,7 @@ module.exports = function(SerialPort) {
 
 	const helmet = require('helmet');
 	const auth = require('./bin/authentication/auth');
-	const { SerialController } = require('./bin/SerialPortController');
+	const SerialController = require('./bin/SerialController');
 
 	const index = require('./routes/index');
 
