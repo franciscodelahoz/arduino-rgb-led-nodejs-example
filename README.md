@@ -1,5 +1,5 @@
 # Arduino RGB Led Nodejs Example
-A example for serial communication with Arduino and NodeJs to control a Common Cathode RGB LED using the [Arduino RGB Led Serial Port](https://github.com/franciscodelahoz/Arduino_RGB_Led_Serial_Port) Example.
+A example for serial communication with Arduino and NodeJs to control a Common Cathode RGB LED using an Arduino and [Node SerialPort](https://github.com/node-serialport/node-serialport).
 
 # Example Circuit
 <p align="center">
