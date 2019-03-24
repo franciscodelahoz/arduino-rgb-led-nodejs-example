@@ -6,7 +6,10 @@ class SerialPortController extends EventEmitter {
 	constructor(SelectedPort) {
 		super();
 		this.SelectedPort = SelectedPort;
+		this.OpenPort();
+	}
 
+	OpenPort() {
 		this.serialPort = new SerialPort(this.SelectedPort, {
 			baudRate: 115200
 		});
@@ -24,16 +27,20 @@ class SerialPortController extends EventEmitter {
 
 		this.serialPort.on('close', () => {
 			console.log('Port Closed');
+			if (!this.serialPort.isOpen) { this.ReconnectPort(); }
+		});
+
+		this.serialPort.on('error', (error) => {
+			console.log(error);
+			if (!this.serialPort.isOpen) { this.ReconnectPort(); }
 		});
 	}
 
 	ReconnectPort() {
 		console.log('Reconnecting To Port...');
 		setTimeout(() => {
-			this.serialPort = new SerialPort(this.SelectedPort, {
-				baudRate: 115200
-			});
-		}, 2000);
+			this.OpenPort();
+		}, 5000);
 	}
 
 	WritePort(message) {
