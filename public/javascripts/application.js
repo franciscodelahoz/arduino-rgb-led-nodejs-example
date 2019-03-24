@@ -12,10 +12,6 @@ const colorShowed = document.getElementById('color');
 var theColor = new Color(0, 0, 0);
 const socket = io();
 
-socket.on('connect', () => {
-	socket.emit('RGB::Value', '');
-});
-
 function sendColor() {
 	socket.emit('Arduino::color', theColor.getRGBvalue());
 }
@@ -78,53 +74,55 @@ function correctInputValue(input, component) {
 	}
 }
 
-redSlider.addEventListener('input', function() {
-	setValueBySlider(this, 'red');
-});
+socket.on('connect', () => {
+	redSlider.addEventListener('input', function() {
+		setValueBySlider(this, 'red');
+	});
 
-greenSlider.addEventListener('input', function() {
-	setValueBySlider(this, 'green');
-});
+	greenSlider.addEventListener('input', function() {
+		setValueBySlider(this, 'green');
+	});
 
-blueSlider.addEventListener('input', function() {
-	setValueBySlider(this, 'blue');
-});
+	blueSlider.addEventListener('input', function() {
+		setValueBySlider(this, 'blue');
+	});
 
-redInput.addEventListener('input', function() {
-	correctInputValue(this, 'red');
-});
+	redInput.addEventListener('input', function() {
+		correctInputValue(this, 'red');
+	});
 
-greenInput.addEventListener('input', function() {
-	correctInputValue(this, 'green');
-});
+	greenInput.addEventListener('input', function() {
+		correctInputValue(this, 'green');
+	});
 
-blueInput.addEventListener('input', function() {
-	correctInputValue(this, 'blue');
-});
+	blueInput.addEventListener('input', function() {
+		correctInputValue(this, 'blue');
+	});
 
-colorInput.addEventListener('change', function() {
-	theColor.setColorFromHex(this.value);
-	setColorShowed();
-	setSlidersValue();
-	setInputValues();
-	sendColor();
-});
+	colorInput.addEventListener('change', function() {
+		theColor.setColorFromHex(this.value);
+		setColorShowed();
+		setSlidersValue();
+		setInputValues();
+		sendColor();
+	});
 
-colorShowed.addEventListener('click', function() {
-	colorInput.click();
-});
+	colorShowed.addEventListener('click', function() {
+		colorInput.click();
+	});
 
-socket.on('Color', (message) => {
-	const { r: red, g: green, b: blue } = message;
-	theColor.setColorFromRGB(red, green, blue);
+	socket.on('Color', (message) => {
+		const { r: red, g: green, b: blue } = message;
+		theColor.setColorFromRGB(red, green, blue);
 
-	setSlidersValue();
-	setInputValues();
-	setColorShowed();
-});
+		setSlidersValue();
+		setInputValues();
+		setColorShowed();
+	});
 
-document.addEventListener('DOMContentLoaded', function() {
-	setSlidersValue();
-	setInputValues();
-	setColorShowed();
+	document.addEventListener('DOMContentLoaded', function() {
+		setSlidersValue();
+		setInputValues();
+		setColorShowed();
+	});
 });

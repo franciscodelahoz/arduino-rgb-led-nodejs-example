@@ -36,23 +36,6 @@ class SerialPortController extends EventEmitter {
 		}, 2000);
 	}
 
-	ReadPort(message) {
-		return new Promise((resolve, reject) => {
-			this.serialPort.write(message + '\n');
-			this.serialPort.drain(() => {
-				this.serialPort.once('data', (data) => {
-					const receivedData = data.toString();
-
-					if (receivedData) {
-						resolve(receivedData);
-					} else {
-						reject('Not data received');
-					}
-				});
-			});
-		});
-	}
-
 	WritePort(message) {
 		this.serialPort.write(message);
 	}

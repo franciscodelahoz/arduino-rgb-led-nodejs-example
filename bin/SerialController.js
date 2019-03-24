@@ -13,10 +13,6 @@ SerialController = function(io, SelectedPort) {
 				SerialController.WritePort(color);
 			});
 
-			socket.on('RGB::Value', () => {
-				SerialController.WritePort('RGB_Value\n');
-			});
-
 			SerialController.on('message', (line) => {
 				if (/^([RGB]\d+){3}$/.test(line)) {
 					const [R, G, B] = line.match(/\d+/gi).map(color => Number(color));
