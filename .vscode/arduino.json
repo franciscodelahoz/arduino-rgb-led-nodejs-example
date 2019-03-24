@@ -1,5 +1,0 @@
-{
-    "sketch": "arduino\\RGB_LED.ino",
-    "board": "arduino:avr:uno",
-    "port": "COM3"
-}
