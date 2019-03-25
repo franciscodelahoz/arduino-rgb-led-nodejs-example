@@ -13,12 +13,7 @@ SerialPortController.SearchPorts().then(ports => {
 			};
 		})
 	}]).then(answers => {
-		const SerialController = new SerialPortController(answers.Ports);
-
-		SerialController.on('ready', () => {
-			console.log('Serial Port Opened!');
-			require('./app')(SerialController);
-		});
+		require('./app')(answers.Ports);
 
 	}).catch(error => { console.log(error); });
 }).catch(error => { console.log(error); });
