@@ -23,6 +23,7 @@ SerialController = function(io, SelectedPort) {
 			socket.on('disconnect', (data) => {
 				console.log(`User Disconnected! ID: ${socket.id}`);
 				socket.removeAllListeners();
+				SerialController.removeAllListeners('message');
 				delete io.sockets.sockets[socket.id];
 			});
 		});
