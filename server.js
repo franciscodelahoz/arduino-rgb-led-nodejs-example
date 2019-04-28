@@ -1,5 +1,12 @@
 const inquirer = require('inquirer');
 const SerialPortController = require('./bin/SerialPortController');
+const ApplicationController = require('./bin/ApplicationController');
+
+const http = require('http');
+const socket = require('socket.io');
+
+const dotenv = require('dotenv');
+dotenv.config({ path: '.env.example' });
 
 SerialPortController.SearchPorts().then(ports => {
 	inquirer.prompt([{
@@ -13,7 +20,21 @@ SerialPortController.SearchPorts().then(ports => {
 			};
 		})
 	}]).then(answers => {
-		require('./app')(answers.Ports);
+		const SelectedPort = answers.Ports;
+		const SerialController = new SerialPortController(SelectedPort);
 
-	}).catch(error => { console.log(error); });
-}).catch(error => { console.log(error); });
+		const app = require('./app');
+		const server = http.createServer(app);
+		const io = socket.listen(server);
+
+		SerialController.on('ready', () => {
+			console.log('Port Connected');
+			ApplicationController(io, SerialController);
+		});
+
+		server.listen(process.env.NODE_APPLICATION_PORT, () => {
+			console.log('Web server Listening!');
+		});
+
+	}).catch(error => { console.log(error); process.exit(); });
+}).catch(error => { console.log(error); process.exit(); });

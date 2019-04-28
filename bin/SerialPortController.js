@@ -26,7 +26,7 @@ class SerialPortController extends EventEmitter {
 		});
 
 		this.serialPort.on('close', () => {
-			console.log('Port Closed');
+			console.log('Serial Port Closed');
 			if (!this.serialPort.isOpen) { this.ReconnectPort(); }
 		});
 
