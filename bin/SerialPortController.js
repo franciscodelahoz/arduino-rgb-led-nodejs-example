@@ -1,6 +1,6 @@
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
-const EventEmitter = require('events');
+const EventEmitter = require('events').EventEmitter;
 
 class SerialPortController extends EventEmitter {
 	constructor(SelectedPort) {
@@ -26,12 +26,12 @@ class SerialPortController extends EventEmitter {
 		});
 
 		this.serialPort.on('close', () => {
-			console.log('Serial Port Closed');
+			this.emit('closed', 'Serial Port Closed');
 			if (!this.serialPort.isOpen) { this.ReconnectPort(); }
 		});
 
 		this.serialPort.on('error', (error) => {
-			console.log(error);
+			this.emit('error', error);
 			if (!this.serialPort.isOpen) { this.ReconnectPort(); }
 		});
 	}

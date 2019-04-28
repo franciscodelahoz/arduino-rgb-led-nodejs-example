@@ -17,7 +17,6 @@ ApplicationController = function(io, SerialPort) {
 
 		socket.on('disconnect', (data) => {
 			console.log(`User Disconnected! ID: ${socket.id}`);
-			SerialPort.removeAllListeners();
 			socket.removeAllListeners();
 			delete io.sockets.sockets[socket.id];
 		});
