@@ -5,7 +5,7 @@ const SocketsController = require('./bin/SocketsController');
 const http = require('http');
 const socket = require('socket.io');
 
-const enableServer = require('server-destroy');
+const enableDestroyServer = require('server-destroy');
 const util = require('util');
 
 const dotenv = require('dotenv');
@@ -30,7 +30,7 @@ SerialPortController.SearchPorts().then(ports => {
 		const server = http.createServer(app);
 		const io = socket.listen(server);
 
-		enableServer(server);
+		enableDestroyServer(server);
 		server.destroy = util.promisify(server.destroy);
 
 		SocketsController(io, SerialController);
