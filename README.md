@@ -12,6 +12,7 @@ The led connection in the hardware is
 | Red   | 9   |
 | Green | 10  |
 | Blue  | 11  |
+|Cathode |GND	|
 
 ### Example Circuit
 <p align="center">
