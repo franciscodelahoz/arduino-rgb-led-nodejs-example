@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const SerialPortController = require('./bin/SerialPortController');
-const ApplicationController = require('./bin/ApplicationController');
+const SocketsController = require('./bin/SocketsController');
 
 const http = require('http');
 const socket = require('socket.io');
@@ -33,7 +33,7 @@ SerialPortController.SearchPorts().then(ports => {
 		enableServer(server);
 		server.destroy = util.promisify(server.destroy);
 
-		ApplicationController(io, SerialController);
+		SocketsController(io, SerialController);
 
 		SerialController.on('ready', () => {
 			console.log('Port Connected');
@@ -55,6 +55,13 @@ SerialPortController.SearchPorts().then(ports => {
 			try {
 				await server.destroy();
 			} catch (err) { console.log(new Error(err).message); }
+		});
+
+		SerialController.on('message', (line) => {
+			if (/^([RGB]([01]?[0-9]{1,2}|2[0-5][0-9]|25[0-5])){3}$/.test(line)) {
+				const [R, G, B] = line.match(/\d+/gi).map(color => Number(color));
+				io.sockets.emit('Color', { r: R, g: G, b: B });
+			}
 		});
 
 	}).catch(error => { console.log(error); process.exit(0); });

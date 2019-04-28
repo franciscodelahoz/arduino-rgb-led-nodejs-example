@@ -8,13 +8,6 @@ ApplicationController = function(io, SerialPort) {
 			SerialPort.WritePort(color);
 		});
 
-		SerialPort.on('message', (line) => {
-			if (/^([RGB]([01]?[0-9]{1,2}|2[0-5][0-9]|25[0-5])){3}$/.test(line)) {
-				const [R, G, B] = line.match(/\d+/gi).map(color => Number(color));
-				socket.emit('Color', { r: R, g: G, b: B });
-			}
-		});
-
 		socket.on('disconnect', (data) => {
 			console.log(`User Disconnected! ID: ${socket.id}`);
 			socket.removeAllListeners();
