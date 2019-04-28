@@ -1,4 +1,4 @@
-ApplicationController = function(io, SerialPort) {
+SocketsController = function(io, SerialPort) {
 	io.sockets.on('connection', (socket) => {
 		console.log(`User Connected! ID: ${socket.id}`);
 
@@ -16,4 +16,4 @@ ApplicationController = function(io, SerialPort) {
 	});
 };
 
-module.exports = ApplicationController;
+module.exports = SocketsController;
