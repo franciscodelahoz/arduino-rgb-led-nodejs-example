@@ -8,6 +8,7 @@ const greenInput  = document.getElementById('greenInput');
 const blueInput   = document.getElementById('blueInput');
 const colorInput  = document.getElementById('colorInput');
 const colorShowed = document.getElementById('color');
+const aboutButton = document.getElementById('about');
 
 var theColor = new Color(0, 0, 0);
 const socket = io();
@@ -26,6 +27,10 @@ function setInputValues() {
 	redInput.value   = theColor.getRedValue();
 	greenInput.value = theColor.getGreenValue();
 	blueInput.value  = theColor.getBlueValue();
+
+	redInput.style.borderColor   = `rgb(${theColor.getRedValue()}, 0, 0)`;
+	greenInput.style.borderColor = `rgb(0, ${theColor.getGreenValue()}, 0)`;
+	blueInput.style.borderColor  = `rgb(0, 0, ${theColor.getBlueValue()})`;
 }
 
 function setValueByComponent(component, value) {
@@ -118,6 +123,10 @@ socket.on('connect', () => {
 		setSlidersValue();
 		setInputValues();
 		setColorShowed();
+	});
+
+	aboutButton.addEventListener('click', function() {
+		return alert('Project made by Francisco De La Hoz.');
 	});
 
 	document.addEventListener('DOMContentLoaded', function() {
