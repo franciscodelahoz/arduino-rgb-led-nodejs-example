@@ -28,6 +28,10 @@
 	margin: 0 auto;
 }
 
+#color:hover {
+	cursor: pointer;
+}
+
 #color {
 	width: 150px;
 	height: 150px;
