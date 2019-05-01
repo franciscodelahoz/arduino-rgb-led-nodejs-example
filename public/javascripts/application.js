@@ -8,6 +8,7 @@ const greenInput  = document.getElementById('greenInput');
 const blueInput   = document.getElementById('blueInput');
 const colorInput  = document.getElementById('colorInput');
 const colorShowed = document.getElementById('color');
+const aboutButton = document.getElementById('about');
 
 var theColor = new Color(0, 0, 0);
 const socket = io();
@@ -122,6 +123,10 @@ socket.on('connect', () => {
 		setSlidersValue();
 		setInputValues();
 		setColorShowed();
+	});
+
+	aboutButton.addEventListener('click', function() {
+		return alert('Project made by Francisco De La Hoz.');
 	});
 
 	document.addEventListener('DOMContentLoaded', function() {
