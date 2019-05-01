@@ -40,12 +40,16 @@ class SerialPortController extends EventEmitter {
 		console.log('Reconnecting To Port...');
 
 		setTimeout(() => {
-			if (!this.serialPort.isOpen) { this.OpenPort(); }
+			if (!this.IsOpen()) { this.OpenPort(); }
 		}, 5000);
 	}
 
 	WritePort(message) {
 		this.serialPort.write(message);
+	}
+
+	IsOpen() {
+		return this.serialPort.isOpen;
 	}
 
 	static SearchPorts() {

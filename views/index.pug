@@ -9,8 +9,11 @@ html(lang='en')
 	body
 		.content
 			.title
-				h3 Arduino And NodeJS LED RGB Controller
+				h3 Arduino And Node.js LED RGB Controller
 			.colorElements
+				.showColor
+					#color
+					input#colorInput(type='color')
 				.sliders
 					.slider
 						input#red(value='0', max='255', type='range')
@@ -21,8 +24,5 @@ html(lang='en')
 					.slider
 						input#blue(value='0', max='255', type='range')
 						input#blueInput(value='0', type='number')
-				.showColor
-					#color
-					input#colorInput(type='color')
 		script(src='/socket.io/socket.io.js')
 		script(type='module', src='/public/javascripts/application.js', crossorigin="use-credentials")
