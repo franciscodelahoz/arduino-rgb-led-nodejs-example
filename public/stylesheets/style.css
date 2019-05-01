@@ -121,4 +121,5 @@ input[type="number"] {
 	height: 20px;
 	-webkit-appearance: none;
 	-moz-appearance: none;
+	padding-left: 5px;
 }
