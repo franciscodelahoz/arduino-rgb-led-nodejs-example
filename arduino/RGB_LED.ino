@@ -27,7 +27,7 @@ void loop() {
 	}
 
 	Serial.print("R" + String(rgb[0]) + "G" + String(rgb[1]) + "B" + String(rgb[2]) + "\n");
-	delay(10);
+	delay(20);
 }
 
 // This function is called when data is available
