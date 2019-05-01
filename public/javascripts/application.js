@@ -26,6 +26,10 @@ function setInputValues() {
 	redInput.value   = theColor.getRedValue();
 	greenInput.value = theColor.getGreenValue();
 	blueInput.value  = theColor.getBlueValue();
+
+	redInput.style.borderColor   = `rgb(${theColor.getRedValue()}, 0, 0)`;
+	greenInput.style.borderColor = `rgb(0, ${theColor.getGreenValue()}, 0)`;
+	blueInput.style.borderColor  = `rgb(0, 0, ${theColor.getBlueValue()})`;
 }
 
 function setValueByComponent(component, value) {

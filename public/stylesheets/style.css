@@ -117,7 +117,7 @@ input[type=range]::-moz-range-track {
 }
 
 input[type="number"] {
-	border: 1.5px solid #8c7eea;
+	border: 1.5px solid black;
 	height: 20px;
 	-webkit-appearance: none;
 	-moz-appearance: none;
