@@ -69,10 +69,8 @@ function correctInputValue(input, component) {
 		setValueByInput(component, input.value);
 
 	} else if (input.value.trim() === '') {
-		setTimeout(() => {
-			if (input.value.trim() === '') { input.value = 0; }
-			setValueByInput(component, input.value);
-		}, 1500);
+		input.value = 0;
+		setValueByInput(component, input.value);
 
 	} else {
 		setValueByInput(component, input.value);
