@@ -58,7 +58,7 @@ SerialPortController.SearchPorts().then(ports => {
 		});
 
 		SerialController.on('message', (line) => {
-			if (/^([RGB]([01]?[0-9]{1,2}|2[0-5][0-9]|25[0-5])){3}$/.test(line)) {
+			if (/^([RGB]([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])){3}$/.test(line)) {
 				const [R, G, B] = line.match(/\d+/gi).map(color => Number(color));
 				io.sockets.emit('Color', { r: R, g: G, b: B });
 			}
