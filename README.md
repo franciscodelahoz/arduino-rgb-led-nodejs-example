@@ -7,12 +7,12 @@ The project is a web application to control a common cathode RGB LED using Ardui
 ### Led Connection
 The led connection in the hardware is
 
-| Color | Pin |
-| ----- | --- |
-| Red   | 9   |
-| Green | 10  |
-| Blue  | 11  |
-|Cathode |GND	|
+| Color   | Pin |
+| ------- | --- |
+| Red     | 9   |
+| Green   | 10  |
+| Blue    | 11  |
+| Cathode | GND |
 
 ### Example Circuit
 <p align="center">
