@@ -2,6 +2,8 @@ const inquirer = require('inquirer');
 const SerialPortController = require('./bin/SerialPortController');
 const SocketsController = require('./bin/SocketsController');
 
+const { DestroyServerOnError } = require('./bin/ServerHandlers');
+
 const http = require('http');
 const socket = require('socket.io');
 
@@ -44,17 +46,11 @@ SerialPortController.SearchPorts().then(ports => {
 		});
 
 		SerialController.on('closed', async (msg) => {
-			console.log(msg);
-			try {
-				await server.destroy();
-			} catch (err) { console.log(new Error(err).message); }
+			DestroyServerOnError(server, msg);
 		});
 
 		SerialController.on('error', async (msg) => {
-			console.log(msg);
-			try {
-				await server.destroy();
-			} catch (err) { console.log(new Error(err).message); }
+			DestroyServerOnError(server, msg);
 		});
 
 		SerialController.on('message', (line) => {
