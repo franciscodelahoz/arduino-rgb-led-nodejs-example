@@ -31,6 +31,6 @@ The format that is used to configure the colors is `R255G255B255\n`.
 
 1.  `git clone https://github.com/franciscodelahoz/arduino-rgb-led-nodejs-example`
 2.  `cd arduino-rgb-led-nodejs-example`
-3.  `npm i`
-4.  `Upload the RGB_LED.ino code to the Arduino from the arduino folder`
+3.  `Upload the RGB_LED.ino code to the Arduino from the arduino folder`
+4.  `npm i`
 5.  `npm start`
