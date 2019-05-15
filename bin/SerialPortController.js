@@ -72,6 +72,6 @@ class SerialPortController extends EventEmitter {
 			});
 		});
 	}
-};
+}
 
 module.exports = SerialPortController;
