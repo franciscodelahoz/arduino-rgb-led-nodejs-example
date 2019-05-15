@@ -4,7 +4,8 @@
   "description": "A example for serial communication with Arduino and NodeJs to control a RGB Led",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "lint": "./node_modules/.bin/eslint *.js"
   },
   "keywords": [],
   "author": "Francisco De La Hoz",
