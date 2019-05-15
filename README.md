@@ -1,4 +1,7 @@
 # Arduino RGB Led Nodejs Example
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/45e13af69ddd42dd8fb0c95b5aa1fbfe)](https://app.codacy.com/app/franciscodelahoz/arduino-rgb-led-nodejs-example?utm_source=github.com&utm_medium=referral&utm_content=franciscodelahoz/arduino-rgb-led-nodejs-example&utm_campaign=Badge_Grade_Dashboard)
+
 A example for serial communication with Arduino and NodeJs to control a Common Cathode RGB LED using an Arduino and [Node SerialPort](https://github.com/node-serialport/node-serialport).
 
 ## Connecting the RGB Led to Arduino
