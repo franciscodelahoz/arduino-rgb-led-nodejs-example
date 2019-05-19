@@ -29,13 +29,13 @@ function emitColorFromSliders(component, value) {
 	socket.emit(`slider_${component}`, value);
 }
 
-function setSlidersValue() {
+function showSlidersValue() {
 	redSlider.value   = theColor.getRedValue();
 	greenSlider.value = theColor.getGreenValue();
 	blueSlider.value  = theColor.getBlueValue();
 }
 
-function setInputValues() {
+function showInputsValue() {
 	redInput.value   = theColor.getRedValue();
 	greenInput.value = theColor.getGreenValue();
 	blueInput.value  = theColor.getBlueValue();
@@ -51,24 +51,28 @@ function setValueByComponent(component, value) {
 	if (component === 'blue')  { theColor.setBlueValue(value);  }
 }
 
-function setColorShowed() {
+function showColorInBox() {
 	colorShowed.style.backgroundColor = theColor.getRGBstring();
+}
+
+function setColorInputValue() {
+	colorInput.value = theColor.getHEXstring();
 }
 
 function setValueBySlider(slider, component) {
 	setValueByComponent(component, slider.value);
-	setInputValues();
-	setColorShowed();
-	colorInput.value = theColor.getHEXstring();
+	showInputsValue();
+	showColorInBox();
+	setColorInputValue();
 	emitColorToArduino();
 	emitColorFromSliders(component, slider.value);
 }
 
 function setValueByInput(component, value) {
 	setValueByComponent(component, value);
-	setSlidersValue();
-	setColorShowed();
-	colorInput.value = theColor.getHEXstring();
+	showSlidersValue();
+	showColorInBox();
+	setColorInputValue();
 	emitColorToArduino();
 	emitColorFromInputs(component, value);
 }
@@ -77,19 +81,28 @@ function correctInputValue(input, component) {
 	if (input.value < 0) {
 		input.value = 0;
 		setValueByInput(component, input.value);
+		showInputsValue();
 
 	} else if (input.value > 255) {
 		input.value = 255;
 		setValueByInput(component, input.value);
+		showInputsValue();
 
 	} else if (input.value.trim() === '') {
 		setTimeout(() => {
 			if (input.value.trim() === '') { input.value = 0; }
 			setValueByInput(component, input.value);
+			showInputsValue();
 		}, 1500);
+
+	} else if (isNaN(input.value)) {
+		input.value = 0;
+		setValueByInput(component, input.value);
+		showInputsValue();
 
 	} else {
 		setValueByInput(component, input.value);
+		showInputsValue();
 	}
 }
 
@@ -120,9 +133,9 @@ socket.on('connect', () => {
 
 	colorInput.addEventListener('change', function() {
 		theColor.setColorFromHex(this.value);
-		setColorShowed();
-		setSlidersValue();
-		setInputValues();
+		showColorInBox();
+		showSlidersValue();
+		showInputsValue();
 		emitColorToArduino();
 		emitColorFromPickers();
 	});
@@ -135,58 +148,66 @@ socket.on('connect', () => {
 		const { r: red, g: green, b: blue } = message;
 		theColor.setColorFromRGB(red, green, blue);
 
-		setSlidersValue();
-		setInputValues();
-		setColorShowed();
+		showSlidersValue();
+		showInputsValue();
+		showColorInBox();
+		setColorInputValue();
 	});
 
 	socket.on('s_picker', (color) => {
 		theColor.setColorFromRGB(color.r, color.g, color.b);
-		setSlidersValue();
-		setInputValues();
-		setColorShowed();
+		showSlidersValue();
+		showInputsValue();
+		showColorInBox();
+		setColorInputValue();
 	});
 
 	socket.on('s_slider_red', (color) => {
 		theColor.setRedValue(color);
-		setSlidersValue();
-		setInputValues();
-		setColorShowed();
+		showSlidersValue();
+		showInputsValue();
+		showColorInBox();
+		setColorInputValue();
 	});
 
 	socket.on('s_slider_green', (color) => {
 		theColor.setGreenValue(color);
-		setSlidersValue();
-		setInputValues();
-		setColorShowed();
+		showSlidersValue();
+		showInputsValue();
+		showColorInBox();
+		setColorInputValue();
 	});
 
 	socket.on('s_slider_blue', (color) => {
 		theColor.setBlueValue(color);
-		setSlidersValue();
-		setInputValues();
-		setColorShowed();
+		showSlidersValue();
+		showInputsValue();
+		showColorInBox();
+		setColorInputValue();
 	});
 
 	socket.on('s_input_red', (color) => {
 		theColor.setRedValue(color);
-		setSlidersValue();
-		setInputValues();
-		setColorShowed();
+		showSlidersValue();
+		showInputsValue();
+		showColorInBox();
+		setColorInputValue();
 	});
 
 	socket.on('s_input_green', (color) => {
 		theColor.setGreenValue(color);
-		setSlidersValue();
-		setInputValues();
-		setColorShowed();
+		showSlidersValue();
+		showInputsValue();
+		showColorInBox();
+		setColorInputValue();
 	});
 
 	socket.on('s_input_blue', (color) => {
 		theColor.setBlueValue(color);
-		setSlidersValue();
-		setInputValues();
-		setColorShowed();
+		showSlidersValue();
+		showInputsValue();
+		showColorInBox();
+		setColorInputValue();
 	});
 
 	aboutButton.addEventListener('click', function() {
@@ -194,8 +215,8 @@ socket.on('connect', () => {
 	});
 
 	document.addEventListener('DOMContentLoaded', function() {
-		setSlidersValue();
-		setInputValues();
-		setColorShowed();
+		showSlidersValue();
+		showInputsValue();
+		showColorInBox();
 	});
 });
