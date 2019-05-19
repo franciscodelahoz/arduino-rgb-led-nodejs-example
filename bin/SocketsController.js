@@ -1,6 +1,6 @@
 const { getRGBColor } = require('../bin/ServerHandlers');
 
-async function EmitColor(SocketClient, SerialObject) {
+async function EmitColorOnConnection(SocketClient, SerialObject) {
 	let Data = 'R0G0B0';
 
 	try {
@@ -14,7 +14,7 @@ async function EmitColor(SocketClient, SerialObject) {
 SocketsController = function(io, SerialPort) {
 	io.sockets.on('connection', (socket) => {
 		console.log(`User Connected! ID: ${socket.id}`);
-		EmitColor(socket, SerialPort);
+		EmitColorOnConnection(socket, SerialPort);
 
 		socket.on('Arduino::color', (colorValue) => {
 			const { r, g, b } = colorValue;

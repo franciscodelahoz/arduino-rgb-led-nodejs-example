@@ -13,19 +13,19 @@ const aboutButton = document.getElementById('about');
 var theColor = new Color(0, 0, 0);
 const socket = io();
 
-function sendColorFromSelector() {
+function emitColorToArduino() {
 	socket.emit('Arduino::color', theColor.getRGBvalue());
 }
 
-function sendColorByPicker() {
+function emitColorFromPickers() {
 	socket.emit('picker', theColor.getRGBvalue());
 }
 
-function sendColorByInput(component, value) {
+function emitColorFromInputs(component, value) {
 	socket.emit(`input_${component}`, value);
 }
 
-function sendColorBySlider(component, value) {
+function emitColorFromSliders(component, value) {
 	socket.emit(`slider_${component}`, value);
 }
 
@@ -60,8 +60,8 @@ function setValueBySlider(slider, component) {
 	setInputValues();
 	setColorShowed();
 	colorInput.value = theColor.getHEXstring();
-	sendColorFromSelector();
-	sendColorBySlider(component, slider.value);
+	emitColorToArduino();
+	emitColorFromSliders(component, slider.value);
 }
 
 function setValueByInput(component, value) {
@@ -69,8 +69,8 @@ function setValueByInput(component, value) {
 	setSlidersValue();
 	setColorShowed();
 	colorInput.value = theColor.getHEXstring();
-	sendColorFromSelector();
-	sendColorByInput(component, value);
+	emitColorToArduino();
+	emitColorFromInputs(component, value);
 }
 
 function correctInputValue(input, component) {
@@ -123,8 +123,8 @@ socket.on('connect', () => {
 		setColorShowed();
 		setSlidersValue();
 		setInputValues();
-		sendColorFromSelector();
-		sendColorByPicker();
+		emitColorToArduino();
+		emitColorFromPickers();
 	});
 
 	colorShowed.addEventListener('click', function() {
@@ -190,7 +190,7 @@ socket.on('connect', () => {
 	});
 
 	aboutButton.addEventListener('click', function() {
-		return alert('Project made by Francisco De La Hoz.');
+		return alert('Project to control a common cathode RGB led.');
 	});
 
 	document.addEventListener('DOMContentLoaded', function() {
