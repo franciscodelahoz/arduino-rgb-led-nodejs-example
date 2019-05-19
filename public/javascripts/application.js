@@ -35,14 +35,14 @@ function showSlidersValue() {
 	blueSlider.value  = theColor.getBlueValue();
 }
 
-function showInputsValue() {
+function showNumberInputsValue() {
 	redInput.value   = theColor.getRedValue();
 	greenInput.value = theColor.getGreenValue();
 	blueInput.value  = theColor.getBlueValue();
 
-	redInput.style.borderColor   = `rgb(${theColor.getRedValue()}, 0, 0)`;
-	greenInput.style.borderColor = `rgb(0, ${theColor.getGreenValue()}, 0)`;
-	blueInput.style.borderColor  = `rgb(0, 0, ${theColor.getBlueValue()})`;
+	redInput.style.borderColor   = `rgb(${theColor.getRedValue()}, 0, 0, 0.5)`;
+	greenInput.style.borderColor = `rgb(0, ${theColor.getGreenValue()}, 0, 0.5)`;
+	blueInput.style.borderColor  = `rgb(0, 0, ${theColor.getBlueValue()}, 0.5)`;
 }
 
 function setValueByComponent(component, value) {
@@ -61,7 +61,7 @@ function setColorInputValue() {
 
 function setValueBySlider(slider, component) {
 	setValueByComponent(component, slider.value);
-	showInputsValue();
+	showNumberInputsValue();
 	showColorInBox();
 	setColorInputValue();
 	emitColorToArduino();
@@ -81,28 +81,28 @@ function correctInputValue(input, component) {
 	if (input.value < 0) {
 		input.value = 0;
 		setValueByInput(component, input.value);
-		showInputsValue();
+		showNumberInputsValue();
 
 	} else if (input.value > 255) {
 		input.value = 255;
 		setValueByInput(component, input.value);
-		showInputsValue();
+		showNumberInputsValue();
 
 	} else if (input.value.trim() === '') {
 		setTimeout(() => {
 			if (input.value.trim() === '') { input.value = 0; }
 			setValueByInput(component, input.value);
-			showInputsValue();
+			showNumberInputsValue();
 		}, 1500);
 
 	} else if (isNaN(input.value)) {
 		input.value = 0;
 		setValueByInput(component, input.value);
-		showInputsValue();
+		showNumberInputsValue();
 
 	} else {
 		setValueByInput(component, input.value);
-		showInputsValue();
+		showNumberInputsValue();
 	}
 }
 
@@ -135,7 +135,7 @@ socket.on('connect', () => {
 		theColor.setColorFromHex(this.value);
 		showColorInBox();
 		showSlidersValue();
-		showInputsValue();
+		showNumberInputsValue();
 		emitColorToArduino();
 		emitColorFromPickers();
 	});
@@ -149,7 +149,7 @@ socket.on('connect', () => {
 		theColor.setColorFromRGB(red, green, blue);
 
 		showSlidersValue();
-		showInputsValue();
+		showNumberInputsValue();
 		showColorInBox();
 		setColorInputValue();
 	});
@@ -157,7 +157,7 @@ socket.on('connect', () => {
 	socket.on('s_picker', (color) => {
 		theColor.setColorFromRGB(color.r, color.g, color.b);
 		showSlidersValue();
-		showInputsValue();
+		showNumberInputsValue();
 		showColorInBox();
 		setColorInputValue();
 	});
@@ -165,7 +165,7 @@ socket.on('connect', () => {
 	socket.on('s_slider_red', (color) => {
 		theColor.setRedValue(color);
 		showSlidersValue();
-		showInputsValue();
+		showNumberInputsValue();
 		showColorInBox();
 		setColorInputValue();
 	});
@@ -173,7 +173,7 @@ socket.on('connect', () => {
 	socket.on('s_slider_green', (color) => {
 		theColor.setGreenValue(color);
 		showSlidersValue();
-		showInputsValue();
+		showNumberInputsValue();
 		showColorInBox();
 		setColorInputValue();
 	});
@@ -181,7 +181,7 @@ socket.on('connect', () => {
 	socket.on('s_slider_blue', (color) => {
 		theColor.setBlueValue(color);
 		showSlidersValue();
-		showInputsValue();
+		showNumberInputsValue();
 		showColorInBox();
 		setColorInputValue();
 	});
@@ -189,7 +189,7 @@ socket.on('connect', () => {
 	socket.on('s_input_red', (color) => {
 		theColor.setRedValue(color);
 		showSlidersValue();
-		showInputsValue();
+		showNumberInputsValue();
 		showColorInBox();
 		setColorInputValue();
 	});
@@ -197,7 +197,7 @@ socket.on('connect', () => {
 	socket.on('s_input_green', (color) => {
 		theColor.setGreenValue(color);
 		showSlidersValue();
-		showInputsValue();
+		showNumberInputsValue();
 		showColorInBox();
 		setColorInputValue();
 	});
@@ -205,7 +205,7 @@ socket.on('connect', () => {
 	socket.on('s_input_blue', (color) => {
 		theColor.setBlueValue(color);
 		showSlidersValue();
-		showInputsValue();
+		showNumberInputsValue();
 		showColorInBox();
 		setColorInputValue();
 	});
@@ -216,7 +216,7 @@ socket.on('connect', () => {
 
 	document.addEventListener('DOMContentLoaded', function() {
 		showSlidersValue();
-		showInputsValue();
+		showNumberInputsValue();
 		showColorInBox();
 	});
 });
