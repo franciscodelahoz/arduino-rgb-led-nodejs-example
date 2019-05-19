@@ -13,8 +13,20 @@ const aboutButton = document.getElementById('about');
 var theColor = new Color(0, 0, 0);
 const socket = io();
 
-function sendColor() {
+function sendColorFromSelector() {
 	socket.emit('Arduino::color', theColor.getRGBvalue());
+}
+
+function sendColorByPicker() {
+	socket.emit('picker', theColor.getRGBvalue());
+}
+
+function sendColorByInput(component, value) {
+	socket.emit(`input_${component}`, value);
+}
+
+function sendColorBySlider(component, value) {
+	socket.emit(`slider_${component}`, value);
 }
 
 function setSlidersValue() {
@@ -48,7 +60,8 @@ function setValueBySlider(slider, component) {
 	setInputValues();
 	setColorShowed();
 	colorInput.value = theColor.getHEXstring();
-	sendColor();
+	sendColorFromSelector();
+	sendColorBySlider(component, slider.value);
 }
 
 function setValueByInput(component, value) {
@@ -56,7 +69,8 @@ function setValueByInput(component, value) {
 	setSlidersValue();
 	setColorShowed();
 	colorInput.value = theColor.getHEXstring();
-	sendColor();
+	sendColorFromSelector();
+	sendColorByInput(component, value);
 }
 
 function correctInputValue(input, component) {
@@ -109,7 +123,8 @@ socket.on('connect', () => {
 		setColorShowed();
 		setSlidersValue();
 		setInputValues();
-		sendColor();
+		sendColorFromSelector();
+		sendColorByPicker();
 	});
 
 	colorShowed.addEventListener('click', function() {
@@ -120,6 +135,55 @@ socket.on('connect', () => {
 		const { r: red, g: green, b: blue } = message;
 		theColor.setColorFromRGB(red, green, blue);
 
+		setSlidersValue();
+		setInputValues();
+		setColorShowed();
+	});
+
+	socket.on('s_picker', (color) => {
+		theColor.setColorFromRGB(color.r, color.g, color.b);
+		setSlidersValue();
+		setInputValues();
+		setColorShowed();
+	});
+
+	socket.on('s_slider_red', (color) => {
+		theColor.setRedValue(color);
+		setSlidersValue();
+		setInputValues();
+		setColorShowed();
+	});
+
+	socket.on('s_slider_green', (color) => {
+		theColor.setGreenValue(color);
+		setSlidersValue();
+		setInputValues();
+		setColorShowed();
+	});
+
+	socket.on('s_slider_blue', (color) => {
+		theColor.setBlueValue(color);
+		setSlidersValue();
+		setInputValues();
+		setColorShowed();
+	});
+
+	socket.on('s_input_red', (color) => {
+		theColor.setRedValue(color);
+		setSlidersValue();
+		setInputValues();
+		setColorShowed();
+	});
+
+	socket.on('s_input_green', (color) => {
+		theColor.setGreenValue(color);
+		setSlidersValue();
+		setInputValues();
+		setColorShowed();
+	});
+
+	socket.on('s_input_blue', (color) => {
+		theColor.setBlueValue(color);
 		setSlidersValue();
 		setInputValues();
 		setColorShowed();

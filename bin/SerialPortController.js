@@ -6,6 +6,7 @@ class SerialPortController extends EventEmitter {
 	constructor(SelectedPort) {
 		super();
 		this.SelectedPort = SelectedPort;
+		this.LineParser = new Readline({ delimiter: '\n' });
 		this.OpenPort();
 	}
 
@@ -14,14 +15,13 @@ class SerialPortController extends EventEmitter {
 			baudRate: 115200
 		});
 
-		const LineParser = new Readline({ delimiter: '\n' });
-		this.serialPort.pipe(LineParser);
+		this.serialPort.pipe(this.LineParser);
 
 		this.serialPort.on('open', () => {
 			this.emit('ready');
 		});
 
-		LineParser.on('data', (line) => {
+		this.LineParser.on('data', (line) => {
 			this.emit('message', line);
 		});
 
@@ -46,6 +46,20 @@ class SerialPortController extends EventEmitter {
 
 	WritePort(message) {
 		this.serialPort.write(message);
+	}
+
+	ReadPort(src) {
+		return new Promise((resolve, reject) => {
+			this.WritePort(src);
+
+			this.LineParser.once('data', (data) => {
+				resolve(data.toString());
+			});
+
+			this.serialPort.once('error', (err) => {
+				reject(err);
+			});
+		});
 	}
 
 	IsOpen() {
