@@ -40,9 +40,9 @@ function showNumberInputsValue() {
 	greenInput.value = theColor.getGreenValue();
 	blueInput.value  = theColor.getBlueValue();
 
-	redInput.style.borderColor   = `rgb(${theColor.getRedValue()}, 0, 0, 0.5)`;
-	greenInput.style.borderColor = `rgb(0, ${theColor.getGreenValue()}, 0, 0.5)`;
-	blueInput.style.borderColor  = `rgb(0, 0, ${theColor.getBlueValue()}, 0.5)`;
+	redInput.style.borderColor   = `rgb(${theColor.getRedValue()}, 0, 0, 0.6)`;
+	greenInput.style.borderColor = `rgb(0, ${theColor.getGreenValue()}, 0, 0.6)`;
+	blueInput.style.borderColor  = `rgb(0, 0, ${theColor.getBlueValue()}, 0.6)`;
 }
 
 function setValueByComponent(component, value) {
