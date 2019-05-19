@@ -60,5 +60,5 @@ SerialPortController.SearchPorts().then(ports => {
 			}
 		});
 
-	}).catch(error => { console.log(error); process.exit(0); });
-}).catch(error => { console.log(error); process.exit(0); });
+	}).catch(error => { console.error(error); });
+}).catch(error => { console.error(error); });
