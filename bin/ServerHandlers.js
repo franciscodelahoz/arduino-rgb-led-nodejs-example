@@ -12,7 +12,18 @@ const getRGBColor = function(line) {
 	return { r: R, g: G, b: B };
 };
 
+async function EmitColorOnConnection(SocketClient, SerialObject) {
+	let color = { r: 0, g: 0, b: 0 };
+
+	try {
+		let DataFromSerial = await SerialObject.ReadPort('\n');
+		color = getRGBColor(DataFromSerial);
+	} catch (error) { console.log(error); }
+
+	SocketClient.emit('Color', color);
+}
+
 module.exports = {
 	DestroyServerOnError: DestroyServerOnError,
-	getRGBColor: getRGBColor
+	EmitColorOnConnection: EmitColorOnConnection
 };
