@@ -90,7 +90,7 @@ function correctInputValue(input, component) {
 
 	} else if (input.value.trim() === '') {
 		setTimeout(() => {
-			if (input.value.trim() === '') { input.value = 0; }
+			if (input.value.trim() === '' || isNaN(input.value)) { input.value = 0; }
 			setValueByInput(component, input.value);
 			showNumberInputsValue();
 		}, 1500);
