@@ -16,7 +16,7 @@ async function EmitColorOnConnection(SocketClient, SerialObject) {
 	let color = { r: 0, g: 0, b: 0 };
 
 	try {
-		let DataFromSerial = await SerialObject.ReadPort('\n');
+		let DataFromSerial = await SerialObject.WriteAndReadPort('\n', 3000);
 		color = getRGBColor(DataFromSerial);
 	} catch (error) { console.log(error); }
 
