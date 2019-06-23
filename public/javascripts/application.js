@@ -13,24 +13,36 @@ const aboutButton = document.getElementById('about');
 var theColor = new Color(0, 0, 0);
 const socket = io();
 
-function sendColor() {
+function emitColorToArduino() {
 	socket.emit('Arduino::color', theColor.getRGBvalue());
 }
 
-function setSlidersValue() {
+function emitColorFromPickers() {
+	socket.emit('picker', theColor.getRGBvalue());
+}
+
+function emitColorFromInputs(component, value) {
+	socket.emit(`input_${component}`, value);
+}
+
+function emitColorFromSliders(component, value) {
+	socket.emit(`slider_${component}`, value);
+}
+
+function showSlidersValue() {
 	redSlider.value   = theColor.getRedValue();
 	greenSlider.value = theColor.getGreenValue();
 	blueSlider.value  = theColor.getBlueValue();
 }
 
-function setInputValues() {
+function showNumberInputsValue() {
 	redInput.value   = theColor.getRedValue();
 	greenInput.value = theColor.getGreenValue();
 	blueInput.value  = theColor.getBlueValue();
 
-	redInput.style.borderColor   = `rgb(${theColor.getRedValue()}, 0, 0)`;
-	greenInput.style.borderColor = `rgb(0, ${theColor.getGreenValue()}, 0)`;
-	blueInput.style.borderColor  = `rgb(0, 0, ${theColor.getBlueValue()})`;
+	redInput.style.borderColor   = `rgb(${theColor.getRedValue()}, 0, 0, 0.8)`;
+	greenInput.style.borderColor = `rgb(0, ${theColor.getGreenValue()}, 0, 0.8)`;
+	blueInput.style.borderColor  = `rgb(0, 0, ${theColor.getBlueValue()}, 0.8)`;
 }
 
 function setValueByComponent(component, value) {
@@ -39,43 +51,58 @@ function setValueByComponent(component, value) {
 	if (component === 'blue')  { theColor.setBlueValue(value);  }
 }
 
-function setColorShowed() {
+function showColorInBox() {
 	colorShowed.style.backgroundColor = theColor.getRGBstring();
+}
+
+function setColorInputValue() {
+	colorInput.value = theColor.getHEXstring();
 }
 
 function setValueBySlider(slider, component) {
 	setValueByComponent(component, slider.value);
-	setInputValues();
-	setColorShowed();
-	colorInput.value = theColor.getHEXstring();
-	sendColor();
+	showNumberInputsValue();
+	showColorInBox();
+	setColorInputValue();
+	emitColorToArduino();
+	emitColorFromSliders(component, slider.value);
 }
 
 function setValueByInput(component, value) {
 	setValueByComponent(component, value);
-	setSlidersValue();
-	setColorShowed();
-	colorInput.value = theColor.getHEXstring();
-	sendColor();
+	showSlidersValue();
+	showColorInBox();
+	setColorInputValue();
+	emitColorToArduino();
+	emitColorFromInputs(component, value);
 }
 
 function correctInputValue(input, component) {
 	if (input.value < 0) {
 		input.value = 0;
 		setValueByInput(component, input.value);
+		showNumberInputsValue();
 
 	} else if (input.value > 255) {
 		input.value = 255;
 		setValueByInput(component, input.value);
+		showNumberInputsValue();
 
 	} else if (input.value.trim() === '') {
 		setTimeout(() => {
-			if (input.value.trim() === '') { input.value = 0; }
+			if (input.value.trim() === '' || isNaN(input.value)) { input.value = 0; }
 			setValueByInput(component, input.value);
+			showNumberInputsValue();
 		}, 1500);
+
+	} else if (isNaN(input.value)) {
+		input.value = 0;
+		setValueByInput(component, input.value);
+		showNumberInputsValue();
 
 	} else {
 		setValueByInput(component, input.value);
+		showNumberInputsValue();
 	}
 }
 
@@ -106,10 +133,11 @@ socket.on('connect', () => {
 
 	colorInput.addEventListener('change', function() {
 		theColor.setColorFromHex(this.value);
-		setColorShowed();
-		setSlidersValue();
-		setInputValues();
-		sendColor();
+		showColorInBox();
+		showSlidersValue();
+		showNumberInputsValue();
+		emitColorToArduino();
+		emitColorFromPickers();
 	});
 
 	colorShowed.addEventListener('click', function() {
@@ -120,18 +148,75 @@ socket.on('connect', () => {
 		const { r: red, g: green, b: blue } = message;
 		theColor.setColorFromRGB(red, green, blue);
 
-		setSlidersValue();
-		setInputValues();
-		setColorShowed();
+		showSlidersValue();
+		showNumberInputsValue();
+		showColorInBox();
+		setColorInputValue();
+	});
+
+	socket.on('s_picker', (color) => {
+		theColor.setColorFromRGB(color.r, color.g, color.b);
+		showSlidersValue();
+		showNumberInputsValue();
+		showColorInBox();
+		setColorInputValue();
+	});
+
+	socket.on('s_slider_red', (color) => {
+		theColor.setRedValue(color);
+		showSlidersValue();
+		showNumberInputsValue();
+		showColorInBox();
+		setColorInputValue();
+	});
+
+	socket.on('s_slider_green', (color) => {
+		theColor.setGreenValue(color);
+		showSlidersValue();
+		showNumberInputsValue();
+		showColorInBox();
+		setColorInputValue();
+	});
+
+	socket.on('s_slider_blue', (color) => {
+		theColor.setBlueValue(color);
+		showSlidersValue();
+		showNumberInputsValue();
+		showColorInBox();
+		setColorInputValue();
+	});
+
+	socket.on('s_input_red', (color) => {
+		theColor.setRedValue(color);
+		showSlidersValue();
+		showNumberInputsValue();
+		showColorInBox();
+		setColorInputValue();
+	});
+
+	socket.on('s_input_green', (color) => {
+		theColor.setGreenValue(color);
+		showSlidersValue();
+		showNumberInputsValue();
+		showColorInBox();
+		setColorInputValue();
+	});
+
+	socket.on('s_input_blue', (color) => {
+		theColor.setBlueValue(color);
+		showSlidersValue();
+		showNumberInputsValue();
+		showColorInBox();
+		setColorInputValue();
 	});
 
 	aboutButton.addEventListener('click', function() {
-		return alert('Project made by Francisco De La Hoz.');
+		return alert('Project to control a common cathode RGB led.');
 	});
 
 	document.addEventListener('DOMContentLoaded', function() {
-		setSlidersValue();
-		setInputValues();
-		setColorShowed();
+		showSlidersValue();
+		showNumberInputsValue();
+		showColorInBox();
 	});
 });

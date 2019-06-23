@@ -6,6 +6,7 @@ class SerialPortController extends EventEmitter {
 	constructor(SelectedPort) {
 		super();
 		this.SelectedPort = SelectedPort;
+		this.MessageReader = new Readline({ delimiter: '\n' });
 		this.OpenPort();
 	}
 
@@ -14,14 +15,13 @@ class SerialPortController extends EventEmitter {
 			baudRate: 115200
 		});
 
-		const LineParser = new Readline({ delimiter: '\n' });
-		this.serialPort.pipe(LineParser);
+		this.serialPort.pipe(this.MessageReader);
 
 		this.serialPort.on('open', () => {
 			this.emit('ready');
 		});
 
-		LineParser.on('data', (line) => {
+		this.MessageReader.on('data', (line) => {
 			this.emit('message', line);
 		});
 
@@ -48,6 +48,27 @@ class SerialPortController extends EventEmitter {
 		this.serialPort.write(message);
 	}
 
+	WriteAndReadPort(src, delayInms) {
+		return new Promise((resolve, reject) => {
+			let eventFired = false;
+			this.WritePort(src);
+
+			function ResolveData(data) {
+				eventFired = true;
+				resolve(data.toString());
+			}
+
+			setTimeout(() => {
+				if (!eventFired) {
+					this.MessageReader.removeListener('data', ResolveData);
+					reject('No data received');
+				}
+			}, delayInms);
+
+			this.MessageReader.once('data', ResolveData);
+		});
+	}
+
 	IsOpen() {
 		return this.serialPort.isOpen;
 	}
@@ -58,7 +79,7 @@ class SerialPortController extends EventEmitter {
 				if (error) { reject(error); }
 
 				if (!ports.length) {
-					reject('Devices not found!');
+					reject('No devices found!');
 				}
 
 				let FindedPorts = ports.map(port => {
