@@ -79,7 +79,7 @@ class SerialPortController extends EventEmitter {
 				if (error) { reject(error); }
 
 				if (!ports.length) {
-					reject('Devices not found!');
+					reject('No devices found!');
 				}
 
 				let FindedPorts = ports.map(port => {
