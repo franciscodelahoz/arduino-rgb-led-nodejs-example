@@ -77,6 +77,28 @@ function setValueByInput(component, value) {
 	emitColorFromInputs(component, value);
 }
 
+function disableAllElements() {
+	redSlider.setAttribute('disabled', 'true');
+	greenSlider.setAttribute('disabled', 'true');
+	blueSlider.setAttribute('disabled', 'true');
+	redInput.setAttribute('disabled', 'true');
+	greenInput.setAttribute('disabled', 'true');
+	blueInput.setAttribute('disabled', 'true');
+	colorInput.setAttribute('disabled', 'true');
+	colorShowed.setAttribute('disabled', 'true');
+}
+
+function enableAllElements() {
+	redSlider.removeAttribute('disabled');
+	greenSlider.removeAttribute('disabled');
+	blueSlider.removeAttribute('disabled');
+	redInput.removeAttribute('disabled');
+	greenInput.removeAttribute('disabled');
+	blueInput.removeAttribute('disabled');
+	colorInput.removeAttribute('disabled');
+	colorShowed.removeAttribute('disabled');
+}
+
 function correctInputValue(input, component) {
 	if (input.value < 0) {
 		input.value = 0;
@@ -144,14 +166,35 @@ socket.on('connect', () => {
 		colorInput.click();
 	});
 
-	socket.on('Color', (message) => {
-		const { r: red, g: green, b: blue } = message;
-		theColor.setColorFromRGB(red, green, blue);
+	socket.on('SerialConnected', () => {
+		console.log('SerialConnected');
+		enableAllElements();
+		alert('The serial port has been connected.');
+	});
 
-		showSlidersValue();
-		showNumberInputsValue();
-		showColorInBox();
-		setColorInputValue();
+	socket.on('SerialDisconnected', () => {
+		console.log('SerialDisconnected');
+		disableAllElements();
+		alert('The serial port has been disconnected.');
+	});
+
+	socket.on('disconnect', () => {
+		console.log('Socket Disconnected');
+		disableAllElements();
+	});
+
+	socket.on('Color', (message) => {
+		if (message) {
+			const { r: red, g: green, b: blue } = message;
+			theColor.setColorFromRGB(red, green, blue);
+
+			showSlidersValue();
+			showNumberInputsValue();
+			showColorInBox();
+			setColorInputValue();
+
+			enableAllElements();
+		}
 	});
 
 	socket.on('s_picker', (color) => {
@@ -215,6 +258,7 @@ socket.on('connect', () => {
 	});
 
 	document.addEventListener('DOMContentLoaded', function() {
+		disableAllElements();
 		showSlidersValue();
 		showNumberInputsValue();
 		showColorInBox();

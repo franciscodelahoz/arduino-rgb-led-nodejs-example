@@ -1,14 +1,9 @@
 const inquirer = require('inquirer');
 const SerialPortController = require('./bin/SerialPortController');
-const SocketsController = require('./bin/SocketsController');
-
-const { DestroyServerOnError } = require('./bin/ServerHandlers');
+const { SocketsController, emitColor } = require('./bin/SocketsController');
 
 const http = require('http');
 const socket = require('socket.io');
-
-const enableDestroyServer = require('server-destroy');
-const util = require('util');
 
 const dotenv = require('dotenv');
 dotenv.config({ path: '.env.example' });
@@ -32,25 +27,24 @@ SerialPortController.SearchPorts().then(ports => {
 		const server = http.createServer(app);
 		const io = socket.listen(server);
 
-		enableDestroyServer(server);
-		server.destroy = util.promisify(server.destroy);
-
 		SocketsController(io, SerialController);
+
+		server.listen(process.env.NODE_APPLICATION_PORT, () => {
+			console.log('Web server Listening!');
+		});
 
 		SerialController.on('ready', () => {
 			console.log('Port Connected');
-
-			server.listen(process.env.NODE_APPLICATION_PORT, () => {
-				console.log('Web server Listening!');
-			});
+			emitColor(io.sockets, SerialController);
 		});
 
-		SerialController.on('closed', async (msg) => {
-			console.error(msg); DestroyServerOnError(server);
+		SerialController.on('closed', (msg) => {
+			console.error(msg);
+			io.sockets.emit('SerialDisconnected');
 		});
 
-		SerialController.on('error', async (msg) => {
-			console.error(msg); DestroyServerOnError(server);
+		SerialController.on('error', (msg) => {
+			console.error(msg);
 		});
 
 	}).catch(error => { console.error(error); });

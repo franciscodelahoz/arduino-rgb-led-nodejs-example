@@ -1,10 +1,34 @@
-const { EmitColorOnConnection } = require('../bin/ServerHandlers');
+const getRGBColor = function(line) {
+	let [r, g, b] = [0, 0, 0];
+
+	if (/^([RGB]([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])){3}$/.test(line)) {
+		[r, g, b] = line.match(/\d+/gi).map(color => Number(color));
+	}
+
+	return { r, g, b };
+};
+
+async function getColorFromPort(SerialObject) {
+	let color = null;
+
+	try {
+		let DataFromSerial = await SerialObject.WriteAndReadPort('\n', 3000);
+		color = getRGBColor(DataFromSerial);
+	} catch (error) { console.log(error); }
+
+	return color;
+}
+
+async function emitColor(socket, SerialPort) {
+	const eColor = await getColorFromPort(SerialPort);
+	socket.emit('Color', eColor);
+}
 
 SocketsController = function(io, SerialPort) {
-	io.sockets.on('connection', (socket) => {
+	io.sockets.on('connection', async (socket) => {
 		console.log(`User Connected! ID: ${socket.id}`);
 
-		EmitColorOnConnection(socket, SerialPort);
+		await emitColor(socket, SerialPort);
 
 		socket.on('Arduino::color', (colorValue) => {
 			const { r, g, b } = colorValue;
@@ -48,4 +72,7 @@ SocketsController = function(io, SerialPort) {
 	});
 };
 
-module.exports = SocketsController;
+module.exports = {
+	SocketsController: SocketsController,
+	emitColor: emitColor
+};

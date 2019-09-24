@@ -88,6 +88,12 @@ input[type="range"]::-moz-range-thumb {
 	border: none;
 }
 
+input[type="range"]:disabled::-webkit-slider-thumb,
+input[type="range"]:disabled::-moz-range-thumb {
+	background: rgb(158, 158, 158);
+	cursor: not-allowed;;
+}
+
 input[type=range]::-moz-range-track {
 	opacity: 0;
 }
