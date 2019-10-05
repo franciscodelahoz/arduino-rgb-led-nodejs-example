@@ -1,4 +1,4 @@
-const getRGBColor = function(line) {
+function getRGBColor(line) {
 	let [r, g, b] = [0, 0, 0];
 
 	if (/^([RGB]([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])){3}$/.test(line)) {
@@ -6,7 +6,7 @@ const getRGBColor = function(line) {
 	}
 
 	return { r, g, b };
-};
+}
 
 async function getColorFromPort(SerialObject) {
 	let color = null;
@@ -24,7 +24,7 @@ async function emitColor(socket, SerialPort) {
 	socket.emit('Color', eColor);
 }
 
-SocketsController = function(io, SerialPort) {
+function SocketsController(io, SerialPort) {
 	io.sockets.on('connection', async (socket) => {
 		console.log(`User Connected! ID: ${socket.id}`);
 
@@ -70,7 +70,7 @@ SocketsController = function(io, SerialPort) {
 			delete io.sockets.sockets[socket.id];
 		});
 	});
-};
+}
 
 module.exports = {
 	SocketsController: SocketsController,
