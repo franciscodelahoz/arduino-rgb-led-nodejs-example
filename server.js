@@ -8,44 +8,53 @@ const socket = require('socket.io');
 const dotenv = require('dotenv');
 dotenv.config({ path: '.env.example' });
 
-SerialPortController.SearchPorts().then(ports => {
-	inquirer.prompt([{
+function getQuestions(postsList) {
+	const choices = postsList.map(port => {
+		return {
+			name: `${port.Name} ==> ${port.Port}`,
+			value: port.Port
+		};
+	});
+
+	return {
 		type: 'list',
 		message: 'Select the port where the Arduino is connected',
 		name: 'Ports',
-		choices: ports.map(port => {
-			return {
-				name: `${port.Name} ==> ${port.Port}`,
-				value: port.Port
-			};
-		})
-	}]).then(answers => {
-		const SelectedPort = answers.Ports;
-		const SerialController = new SerialPortController(SelectedPort);
+		choices: choices
+	};
+}
 
-		const app = require('./app');
-		const server = http.createServer(app);
-		const io = socket.listen(server);
+SerialPortController.SearchPorts().then(async ports => {
+	const { Ports: SelectedPort } = await inquirer.prompt(getQuestions(ports));
 
-		SocketsController(io, SerialController);
+	const SerialController = new SerialPortController(SelectedPort);
 
-		server.listen(process.env.NODE_APPLICATION_PORT, () => {
-			console.log('Web server Listening!');
-		});
+	const app = require('./app');
+	const server = http.createServer(app);
+	const io = socket.listen(server);
 
-		SerialController.on('ready', () => {
-			console.log('Port Connected');
-			emitColor(io.sockets, SerialController);
-		});
+	SocketsController(io, SerialController);
 
-		SerialController.on('closed', (msg) => {
-			console.error(msg);
-			io.sockets.emit('SerialDisconnected');
-		});
+	server.listen(process.env.NODE_APPLICATION_PORT, () => {
+		console.log('Web server Listening!');
+	});
 
-		SerialController.on('error', (msg) => {
-			console.error(msg);
-		});
+	SerialController.on('ready', () => {
+		console.log('Port Connected');
+		emitColor(io.sockets, SerialController);
+	});
 
-	}).catch(error => { console.error(error); });
+	SerialController.on('reconnected', () => {
+		console.log('Port Reconnected');
+	});
+
+	SerialController.on('closed', (msg) => {
+		console.error(msg);
+		io.sockets.emit('SerialDisconnected');
+	});
+
+	SerialController.on('error', (msg) => {
+		console.error(msg);
+	});
+
 }).catch(error => { console.error(error); });
