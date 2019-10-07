@@ -24,11 +24,16 @@ async function emitColor(socket, SerialPort) {
 	socket.emit('Color', eColor);
 }
 
+async function emitColorWithStatus(socket, SerialPort) {
+	const eColor = await getColorFromPort(SerialPort);
+	socket.emit('Connected', { PortStatus: SerialPort.IsOpen(), Color: eColor });
+}
+
 function SocketsController(io, SerialPort) {
 	io.sockets.on('connection', async (socket) => {
 		console.log(`User Connected! ID: ${socket.id}`);
 
-		await emitColor(socket, SerialPort);
+		await emitColorWithStatus(socket, SerialPort);
 
 		socket.on('Arduino::color', (colorValue) => {
 			const { r, g, b } = colorValue;

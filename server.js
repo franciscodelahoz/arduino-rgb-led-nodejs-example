@@ -41,11 +41,16 @@ SerialPortController.SearchPorts().then(async ports => {
 
 	SerialController.on('ready', () => {
 		console.log('Port Connected');
-		emitColor(io.sockets, SerialController);
+		io.sockets.emit('SerialConnected');
 	});
 
-	SerialController.on('reconnected', () => {
+	SerialController.on('reconnected', async () => {
 		console.log('Port Reconnected');
+		io.sockets.emit('SerialReconnected');
+
+		setTimeout(async () => {
+			await emitColor(io.sockets, SerialController);
+		}, 1500);
 	});
 
 	SerialController.on('closed', (msg) => {

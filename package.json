@@ -18,7 +18,6 @@
     "inquirer": "^7.0.0",
     "pug": "^2.0.4",
     "serialport": "^7.1.5",
-    "server-destroy": "^1.0.1",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
