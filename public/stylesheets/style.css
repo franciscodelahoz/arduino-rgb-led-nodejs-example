@@ -88,12 +88,6 @@ input[type="range"]::-moz-range-thumb {
 	border: none;
 }
 
-input[type="range"]:disabled::-webkit-slider-thumb,
-input[type="range"]:disabled::-moz-range-thumb {
-	background: rgb(158, 158, 158);
-	cursor: not-allowed;;
-}
-
 input[type=range]::-moz-range-track {
 	opacity: 0;
 }
@@ -122,6 +116,30 @@ input[type=range]::-moz-range-track {
 	background: blue;
 }
 
+input[type="range"]:disabled,
+input[type="range"]:disabled {
+	background: #e3e3e3;
+	cursor: not-allowed;
+}
+
+#red:disabled::-moz-range-thumb,
+#green:disabled::-moz-range-thumb,
+#blue:disabled::-moz-range-thumb {
+	background: #696969;
+	cursor: not-allowed;
+}
+
+#red:disabled::-webkit-slider-thumb,
+#green:disabled::-webkit-slider-thumb,
+#blue:disabled::-webkit-slider-thumb {
+	background: #696969;
+	cursor: not-allowed;
+}
+
+#color[disabled="true"] {
+	cursor: not-allowed;
+}
+
 input[type="number"] {
 	font-family: Arial;
 	border: 2.5px solid black;
@@ -130,6 +148,12 @@ input[type="number"] {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	padding-left: 5px;
+}
+
+input[type="number"]:disabled {
+	background: #e3e3e3;
+	cursor: not-allowed;
+	border-color: #696969 !important;
 }
 
 .bottom_buttons > p {
