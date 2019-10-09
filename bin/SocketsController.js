@@ -1,10 +1,10 @@
-const { EmitColorOnConnection } = require('../bin/ServerHandlers');
+const { emitColorWithStatus } = require('./ServerHandlers');
 
-SocketsController = function(io, SerialPort) {
-	io.sockets.on('connection', (socket) => {
+function SocketsController(io, SerialPort) {
+	io.sockets.on('connection', async (socket) => {
 		console.log(`User Connected! ID: ${socket.id}`);
 
-		EmitColorOnConnection(socket, SerialPort);
+		await emitColorWithStatus(socket, SerialPort);
 
 		socket.on('Arduino::color', (colorValue) => {
 			const { r, g, b } = colorValue;
@@ -46,6 +46,6 @@ SocketsController = function(io, SerialPort) {
 			delete io.sockets.sockets[socket.id];
 		});
 	});
-};
+}
 
 module.exports = SocketsController;

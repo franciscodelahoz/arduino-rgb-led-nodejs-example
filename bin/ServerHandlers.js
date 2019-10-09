@@ -1,29 +1,36 @@
-const DestroyServerOnError = async function(server) {
-	try {
-		await server.destroy();
-	} catch (err) { console.log(new Error(err).message); }
-};
+function getRGBColor(line) {
+	let [r, g, b] = [0, 0, 0];
 
-const getRGBColor = function(line) {
-	let [R, G, B] = [0, 0, 0];
 	if (/^([RGB]([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])){3}$/.test(line)) {
-		[R, G, B] = line.match(/\d+/gi).map(color => Number(color));
+		[r, g, b] = line.match(/\d+/gi).map(color => Number(color));
 	}
-	return { r: R, g: G, b: B };
-};
 
-async function EmitColorOnConnection(SocketClient, SerialObject) {
-	let color = { r: 0, g: 0, b: 0 };
+	return { r, g, b };
+}
+
+async function getColorFromPort(SerialObject) {
+	let color = null;
 
 	try {
 		let DataFromSerial = await SerialObject.WriteAndReadPort('\n', 3000);
 		color = getRGBColor(DataFromSerial);
 	} catch (error) { console.log(error); }
 
-	SocketClient.emit('Color', color);
+	return color;
+}
+
+async function emitColor(socket, SerialPort) {
+	const eColor = await getColorFromPort(SerialPort);
+	socket.emit('Color', eColor);
+}
+
+async function emitColorWithStatus(socket, SerialPort) {
+	const eColor = await getColorFromPort(SerialPort);
+	socket.emit('Connected', { PortStatus: SerialPort.IsOpen(), Color: eColor });
 }
 
 module.exports = {
-	DestroyServerOnError: DestroyServerOnError,
-	EmitColorOnConnection: EmitColorOnConnection
+	getColorFromPort: getColorFromPort,
+	emitColor: emitColor,
+	emitColorWithStatus: emitColorWithStatus
 };

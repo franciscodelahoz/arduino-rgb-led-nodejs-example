@@ -18,7 +18,13 @@ class SerialPortController extends EventEmitter {
 		this.serialPort.pipe(this.MessageReader);
 
 		this.serialPort.on('open', () => {
-			this.emit('ready');
+			if (!this.firstTimeOppened) {
+				this.firstTimeOppened = true;
+				this.emit('ready');
+
+			} else {
+				this.emit('reconnected');
+			}
 		});
 
 		this.MessageReader.on('data', (line) => {

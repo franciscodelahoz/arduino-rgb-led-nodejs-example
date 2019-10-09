@@ -5,13 +5,29 @@ export class Color {
 		this.blue  = blue;
 	}
 
-	getRedValue()   { return this.red;   }
-	getGreenValue() { return this.green; }
-	getBlueValue()  { return this.blue;  }
+	getRedValue() {
+		return this.red;
+	}
 
-	setRedValue(value)   { this.red = value;   }
-	setGreenValue(value) { this.green = value; }
-	setBlueValue(value)  { this.blue = value;  }
+	getGreenValue() {
+		return this.green;
+	}
+
+	getBlueValue() {
+		return this.blue;
+	}
+
+	setRedValue(value) {
+		this.red = value;
+	}
+
+	setGreenValue(value) {
+		this.green = value;
+	}
+
+	setBlueValue(value) {
+		this.blue = value;
+	}
 
 	getRGBvalue() {
 		return { r: this.red, g: this.green, b: this.blue };

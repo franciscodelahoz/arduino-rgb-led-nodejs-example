@@ -20,7 +20,7 @@ The led connection in the hardware is
 
 ### Example Circuit
 <p align="center">
-  <img src="https://github.com/franciscodelahoz/arduino-rgb-led-nodejs-example/blob/development/static/RGB_Led_Connections.svg" alt="Circuit" width="850px"/>
+  <img src="./static/RGB_Led_Connections.svg" alt="Circuit" width="850px"/>
 </p>
 
 ## Incoming data format

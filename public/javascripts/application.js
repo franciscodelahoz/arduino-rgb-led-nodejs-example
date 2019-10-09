@@ -77,6 +77,28 @@ function setValueByInput(component, value) {
 	emitColorFromInputs(component, value);
 }
 
+function disableAllElements() {
+	redSlider.setAttribute('disabled', 'true');
+	greenSlider.setAttribute('disabled', 'true');
+	blueSlider.setAttribute('disabled', 'true');
+	redInput.setAttribute('disabled', 'true');
+	greenInput.setAttribute('disabled', 'true');
+	blueInput.setAttribute('disabled', 'true');
+	colorInput.setAttribute('disabled', 'true');
+	colorShowed.setAttribute('disabled', 'true');
+}
+
+function enableAllElements() {
+	redSlider.removeAttribute('disabled');
+	greenSlider.removeAttribute('disabled');
+	blueSlider.removeAttribute('disabled');
+	redInput.removeAttribute('disabled');
+	greenInput.removeAttribute('disabled');
+	blueInput.removeAttribute('disabled');
+	colorInput.removeAttribute('disabled');
+	colorShowed.removeAttribute('disabled');
+}
+
 function correctInputValue(input, component) {
 	if (input.value < 0) {
 		input.value = 0;
@@ -107,51 +129,47 @@ function correctInputValue(input, component) {
 }
 
 socket.on('connect', () => {
-	redSlider.addEventListener('input', function() {
-		setValueBySlider(this, 'red');
+	socket.on('Connected', (message) => {
+		if (message.PortStatus) { enableAllElements(); }
+
+		if (message.Color) {
+			const { r: red, g: green, b: blue } = message.Color;
+			theColor.setColorFromRGB(red, green, blue);
+
+			showSlidersValue();
+			showNumberInputsValue();
+			showColorInBox();
+			setColorInputValue();
+
+			enableAllElements();
+		}
 	});
 
-	greenSlider.addEventListener('input', function() {
-		setValueBySlider(this, 'green');
+	socket.on('SerialConnected', () => {
+		enableAllElements();
+		alert('The serial port has been connected.');
 	});
 
-	blueSlider.addEventListener('input', function() {
-		setValueBySlider(this, 'blue');
+	socket.on('SerialReconnected', () => {
+		enableAllElements();
+		alert('The serial port has been reconnected.');
 	});
 
-	redInput.addEventListener('input', function() {
-		correctInputValue(this, 'red');
-	});
-
-	greenInput.addEventListener('input', function() {
-		correctInputValue(this, 'green');
-	});
-
-	blueInput.addEventListener('input', function() {
-		correctInputValue(this, 'blue');
-	});
-
-	colorInput.addEventListener('change', function() {
-		theColor.setColorFromHex(this.value);
-		showColorInBox();
-		showSlidersValue();
-		showNumberInputsValue();
-		emitColorToArduino();
-		emitColorFromPickers();
-	});
-
-	colorShowed.addEventListener('click', function() {
-		colorInput.click();
+	socket.on('SerialDisconnected', () => {
+		disableAllElements();
+		alert('The serial port has been disconnected.');
 	});
 
 	socket.on('Color', (message) => {
-		const { r: red, g: green, b: blue } = message;
-		theColor.setColorFromRGB(red, green, blue);
+		if (message) {
+			const { r: red, g: green, b: blue } = message;
+			theColor.setColorFromRGB(red, green, blue);
 
-		showSlidersValue();
-		showNumberInputsValue();
-		showColorInBox();
-		setColorInputValue();
+			showSlidersValue();
+			showNumberInputsValue();
+			showColorInBox();
+			setColorInputValue();
+		}
 	});
 
 	socket.on('s_picker', (color) => {
@@ -209,14 +227,52 @@ socket.on('connect', () => {
 		showColorInBox();
 		setColorInputValue();
 	});
+});
 
-	aboutButton.addEventListener('click', function() {
-		return alert('Project to control a common cathode RGB led.');
-	});
+redSlider.addEventListener('input', function() {
+	setValueBySlider(this, 'red');
+});
 
-	document.addEventListener('DOMContentLoaded', function() {
-		showSlidersValue();
-		showNumberInputsValue();
-		showColorInBox();
-	});
+greenSlider.addEventListener('input', function() {
+	setValueBySlider(this, 'green');
+});
+
+blueSlider.addEventListener('input', function() {
+	setValueBySlider(this, 'blue');
+});
+
+redInput.addEventListener('input', function() {
+	correctInputValue(this, 'red');
+});
+
+greenInput.addEventListener('input', function() {
+	correctInputValue(this, 'green');
+});
+
+blueInput.addEventListener('input', function() {
+	correctInputValue(this, 'blue');
+});
+
+colorInput.addEventListener('change', function() {
+	theColor.setColorFromHex(this.value);
+	showColorInBox();
+	showSlidersValue();
+	showNumberInputsValue();
+	emitColorToArduino();
+	emitColorFromPickers();
+});
+
+colorShowed.addEventListener('click', function() {
+	colorInput.click();
+});
+
+aboutButton.addEventListener('click', function() {
+	return alert('Project to control a common cathode RGB LED.');
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+	disableAllElements();
+	showSlidersValue();
+	showNumberInputsValue();
+	showColorInBox();
 });

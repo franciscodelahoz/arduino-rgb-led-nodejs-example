@@ -1,57 +1,66 @@
 const inquirer = require('inquirer');
 const SerialPortController = require('./bin/SerialPortController');
 const SocketsController = require('./bin/SocketsController');
-
-const { DestroyServerOnError } = require('./bin/ServerHandlers');
+const { emitColor } = require('./bin/ServerHandlers');
 
 const http = require('http');
 const socket = require('socket.io');
 
-const enableDestroyServer = require('server-destroy');
-const util = require('util');
-
 const dotenv = require('dotenv');
 dotenv.config({ path: '.env.example' });
 
-SerialPortController.SearchPorts().then(ports => {
-	inquirer.prompt([{
+function getQuestions(postsList) {
+	const choices = postsList.map(port => {
+		return {
+			name: `${port.Name} ==> ${port.Port}`,
+			value: port.Port
+		};
+	});
+
+	return {
 		type: 'list',
 		message: 'Select the port where the Arduino is connected',
 		name: 'Ports',
-		choices: ports.map(port => {
-			return {
-				name: `${port.Name} ==> ${port.Port}`,
-				value: port.Port
-			};
-		})
-	}]).then(answers => {
-		const SelectedPort = answers.Ports;
-		const SerialController = new SerialPortController(SelectedPort);
+		choices: choices
+	};
+}
 
-		const app = require('./app');
-		const server = http.createServer(app);
-		const io = socket.listen(server);
+SerialPortController.SearchPorts().then(async ports => {
+	const { Ports: SelectedPort } = await inquirer.prompt(getQuestions(ports));
 
-		enableDestroyServer(server);
-		server.destroy = util.promisify(server.destroy);
+	const SerialController = new SerialPortController(SelectedPort);
 
-		SocketsController(io, SerialController);
+	const app = require('./app');
+	const server = http.createServer(app);
+	const io = socket.listen(server);
 
-		SerialController.on('ready', () => {
-			console.log('Port Connected');
+	SocketsController(io, SerialController);
 
-			server.listen(process.env.NODE_APPLICATION_PORT, () => {
-				console.log('Web server Listening!');
-			});
-		});
+	server.listen(process.env.NODE_APPLICATION_PORT, () => {
+		console.log('Web server Listening!');
+	});
 
-		SerialController.on('closed', async (msg) => {
-			console.error(msg); DestroyServerOnError(server);
-		});
+	SerialController.on('ready', () => {
+		console.log('Port Connected');
+		io.sockets.emit('SerialConnected');
+	});
 
-		SerialController.on('error', async (msg) => {
-			console.error(msg); DestroyServerOnError(server);
-		});
+	SerialController.on('reconnected', async () => {
+		console.log('Port Reconnected');
+		io.sockets.emit('SerialReconnected');
 
-	}).catch(error => { console.error(error); });
+		setTimeout(async () => {
+			await emitColor(io.sockets, SerialController);
+		}, 1500);
+	});
+
+	SerialController.on('closed', (msg) => {
+		console.error(msg);
+		io.sockets.emit('SerialDisconnected');
+	});
+
+	SerialController.on('error', (msg) => {
+		console.error(msg);
+	});
+
 }).catch(error => { console.error(error); });
