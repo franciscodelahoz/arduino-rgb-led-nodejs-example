@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const SerialPortController = require('./bin/SerialPortController');
-const { SocketsController, emitColor } = require('./bin/SocketsController');
+const SocketsController = require('./bin/SocketsController');
+const { emitColor } = require('./bin/ServerHandlers');
 
 const http = require('http');
 const socket = require('socket.io');
