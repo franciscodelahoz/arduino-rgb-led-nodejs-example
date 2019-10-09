@@ -1,4 +1,4 @@
-const { emitColorWithStatus } = require('./ServerHelpers');
+const { emitColorWithStatus } = require('./ServerHandlers');
 
 function SocketsController(io, SerialPort) {
 	io.sockets.on('connection', async (socket) => {
