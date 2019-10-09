@@ -19,7 +19,7 @@
     "pug": "^2.0.4",
     "serialport": "^7.1.5",
     "server-destroy": "^1.0.1",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "eslint": "^6.5.1"
