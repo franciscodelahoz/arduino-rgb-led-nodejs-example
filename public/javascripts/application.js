@@ -267,7 +267,7 @@ colorShowed.addEventListener('click', function() {
 });
 
 aboutButton.addEventListener('click', function() {
-	return alert('Project to control a common cathode RGB led.');
+	return alert('Project to control a common cathode RGB LED.');
 });
 
 document.addEventListener('DOMContentLoaded', function() {
