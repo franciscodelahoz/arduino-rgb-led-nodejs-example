@@ -3,7 +3,7 @@
 [![Dependency Status](https://david-dm.org/franciscodelahoz/arduino-rgb-led-nodejs-example.svg)](https://david-dm.org/franciscodelahoz/arduino-rgb-led-nodejs-example)
 [![devDependency Status](https://david-dm.org/franciscodelahoz/arduino-rgb-led-nodejs-example/dev-status.svg)](https://david-dm.org/franciscodelahoz/arduino-rgb-led-nodejs-example?type=dev)
 
-A example for serial communication with Arduino and NodeJs to control a Common Cathode RGB LED using an Arduino and [Node SerialPort](https://github.com/node-serialport/node-serialport).
+A example for serial communication with Arduino and Node.js to control a Common Cathode RGB LED using an Arduino and [Node SerialPort](https://github.com/node-serialport/node-serialport).
 
 ## Connecting the RGB Led to Arduino
 The project is a web application to control a common cathode RGB LED using Arduino and [Node SerialPort](https://github.com/node-serialport/node-serialport). The server uses the [Express](https://github.com/expressjs/express) framework and [Socket.io](https://github.com/socketio/socket.io) to transmit data in real time between the server and the client.
