@@ -16,7 +16,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
-    "inquirer": "^7.3.2",
+    "inquirer": "^7.3.3",
     "pug": "^3.0.0",
     "serialport": "^9.0.0",
     "socket.io": "^2.3.0"
