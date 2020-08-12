@@ -1,7 +1,6 @@
 # Arduino RGB Led Node.js Example
 
-[![Dependency Status](https://david-dm.org/franciscodelahoz/arduino-rgb-led-nodejs-example.svg)](https://david-dm.org/franciscodelahoz/arduino-rgb-led-nodejs-example)
-[![devDependency Status](https://david-dm.org/franciscodelahoz/arduino-rgb-led-nodejs-example/dev-status.svg)](https://david-dm.org/franciscodelahoz/arduino-rgb-led-nodejs-example?type=dev)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=franciscodelahoz/arduino-rgb-led-nodejs-example)](https://dependabot.com)
 
 A example for serial communication with Arduino and Node.js to control a Common Cathode RGB LED using an Arduino and [Node SerialPort](https://github.com/node-serialport/node-serialport).
 
