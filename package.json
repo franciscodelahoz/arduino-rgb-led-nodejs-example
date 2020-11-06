@@ -19,7 +19,7 @@
     "inquirer": "^7.3.3",
     "pug": "^3.0.0",
     "serialport": "^9.0.2",
-    "socket.io": "^2.3.0"
+    "socket.io": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^7.12.1"
