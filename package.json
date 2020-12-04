@@ -18,7 +18,7 @@
     "helmet": "^4.2.0",
     "inquirer": "^7.3.3",
     "pug": "^3.0.0",
-    "serialport": "^9.0.2",
+    "serialport": "^9.0.3",
     "socket.io": "^3.0.1"
   },
   "devDependencies": {
