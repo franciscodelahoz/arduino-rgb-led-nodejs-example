@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>RGB LED Controller</title>
+		<link rel="stylesheet" href="/public/stylesheets/style.css">
+	</head>
+	<body>
+		<div class="content">
+			<div class="title">
+				<h3>Arduino And Node.js Common Cathode RGB LED Controller</h3>
+			</div>
+			<div class="colorElements">
+				<div class="showColor">
+					<div id="color"></div>
+					<input type="color" id="colorInput">
+				</div>
+				<div class="sliders">
+					<div class="slider">
+						<input type="range" id="red" value="0", max="255", type="range">
+						<input type="number" id="redInput" value="0">
+					</div>
+					<div class="slider">
+						<input type="range" id="green" value="0", max="255", type="range">
+						<input type="number" id="greenInput" value="0">
+					</div>
+					<div class="slider">
+						<input type="range" id="blue" value="0", max="255", type="range">
+						<input type="number" id="blueInput" value="0">
+					</div>
+				</div>
+			</div>
+			<div class="bottom_buttons">
+				<p id="about">About</p>
+			</div>
+		</div>
+		<script src="/socket.io/socket.io.js"></script>
+		<script type="module" src="/public/javascripts/application.js" crossorigin="use-credentials"></script>
+	</body>
+</html>

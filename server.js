@@ -4,7 +4,7 @@ const SocketsController = require('./bin/SocketsController');
 const { emitColor } = require('./bin/ServerHandlers');
 
 const http = require('http');
-const socket = require('socket.io');
+const { Server } = require('socket.io');
 
 const dotenv = require('dotenv');
 dotenv.config({ path: '.env.example' });
@@ -32,7 +32,7 @@ SerialPortController.SearchPorts().then(async ports => {
 
 	const app = require('./app');
 	const server = http.createServer(app);
-	const io = socket.listen(server);
+	const io = new Server(server);
 
 	SocketsController(io, SerialController);
 

@@ -81,22 +81,25 @@ class SerialPortController extends EventEmitter {
 
 	static SearchPorts() {
 		return new Promise((resolve, reject) => {
-			SerialPort.list((error, ports) => {
-				if (error) { reject(error); }
+			SerialPort.list()
+				.then((ports) => {
+					if (!ports.length) {
+						reject('No devices found!');
+					}
 
-				if (!ports.length) {
-					reject('No devices found!');
-				}
+					let foundPorts = ports.map(port => {
+						return {
+							Port: port.comName,
+							Name: port.manufacturer
+						};
+					});
 
-				let FindedPorts = ports.map(port => {
-					return {
-						Port: port.comName,
-						Name: port.manufacturer
-					};
+					resolve(foundPorts);
+				})
+				.catch((error) => {
+					console.log(error);
+					reject(error);
 				});
-
-				resolve(FindedPorts);
-			});
 		});
 	}
 }
