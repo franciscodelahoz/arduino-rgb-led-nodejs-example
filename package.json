@@ -18,7 +18,7 @@
     "helmet": "^4.4.1",
     "inquirer": "^8.0.0",
     "serialport": "^9.0.7",
-    "socket.io": "^4.0.0"
+    "socket.io": "^4.0.2"
   },
   "devDependencies": {
     "eslint": "^7.23.0"
